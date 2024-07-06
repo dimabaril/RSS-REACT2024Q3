@@ -16,6 +16,7 @@ export default class Search extends Component<SearchProps, SearchState> {
     this.state = {
       searchText: savedSearchInput,
     };
+    this.props.onSearch(this.state.searchText);
   }
 
   handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,8 +24,9 @@ export default class Search extends Component<SearchProps, SearchState> {
   };
 
   handleSearch = () => {
-    localStorage.setItem("searchText", this.state.searchText);
-    this.props.onSearch(this.state.searchText);
+    const trimmedSearchText = this.state.searchText.trim();
+    localStorage.setItem("searchText", trimmedSearchText);
+    this.props.onSearch(trimmedSearchText);
   };
 
   render = () => {
