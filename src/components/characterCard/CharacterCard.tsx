@@ -1,4 +1,5 @@
 import { Component } from "react";
+
 import { Character } from "../../interfaces/interfaces";
 
 interface CharacterCardProps {

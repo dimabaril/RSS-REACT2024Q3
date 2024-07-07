@@ -1,12 +1,11 @@
-import "./App.css";
 import { Component } from "react";
 
-import Search from "./components/search/Search";
-import ErrorButton from "./components/errorButton/ErrorButton";
+import "./App.css";
 import Content from "./components/content/Content";
-
-import { fetchSWPeople } from "./services/api";
+import ErrorButton from "./components/errorButton/ErrorButton";
+import Search from "./components/search/Search";
 import { Character } from "./interfaces/interfaces";
+import { fetchSWPeople } from "./services/api";
 
 interface AppState {
   results: Character[];
