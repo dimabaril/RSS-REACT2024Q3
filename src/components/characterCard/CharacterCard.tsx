@@ -22,7 +22,7 @@ export default class CharacterCard extends Component<CharacterCardProps> {
             height: {character.height} cm.
           </li>
           <li className="character-card__description-item">
-            mass: {character.mass} kl.
+            mass: {character.mass} kg.
           </li>
           <li className="character-card__description-item">
             skin color: {character.skin_color}
