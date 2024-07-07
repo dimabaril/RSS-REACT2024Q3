@@ -1,6 +1,7 @@
 import { Component } from "react";
 
 import { Character } from "../../interfaces/interfaces";
+import "./CharacterCard.scss";
 
 interface CharacterCardProps {
   character: Character;

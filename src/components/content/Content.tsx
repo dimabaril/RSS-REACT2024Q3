@@ -2,6 +2,7 @@ import { Component } from "react";
 
 import { Character } from "../../interfaces/interfaces";
 import CharacterCard from "../characterCard/CharacterCard";
+import "./Content.scss";
 
 interface ContentProps {
   className?: string;
@@ -10,12 +11,11 @@ interface ContentProps {
 
 export default class Content extends Component<ContentProps> {
   render() {
-    const baseClass = this.props.className || "content";
     const { results } = this.props;
     if (results.length === 0)
-      return <section className={baseClass}>No results found</section>;
+      return <section className="content">No results found</section>;
     return (
-      <section className={baseClass}>
+      <section className="content">
         {results.map((character) => (
           <CharacterCard key={character.url.toString()} character={character} />
         ))}

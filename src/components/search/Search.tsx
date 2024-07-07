@@ -1,5 +1,7 @@
 import { Component } from "react";
 
+import "./Search.scss";
+
 interface SearchProps {
   className?: string;
   onSearch: (searchText: string) => void;

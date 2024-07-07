@@ -1,5 +1,7 @@
 import { Component } from "react";
 
+import "./ErrorButton.scss";
+
 interface ErrorButtonState {
   error: boolean;
 }

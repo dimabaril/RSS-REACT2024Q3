@@ -5,7 +5,7 @@ import App from "./App.tsx";
 import {
   ErrorBoundary,
   ErrorFallbackUI,
-} from "./components/errorBoundary/errorBoundary.tsx";
+} from "./components/errorBoundary/ErrorBoundary.tsx";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

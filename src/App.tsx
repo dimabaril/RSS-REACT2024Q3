@@ -34,7 +34,7 @@ export default class App extends Component<Record<string, never>, AppState> {
       <>
         <Search className="search" onSearch={this.handleSearch} />
         <ErrorButton />
-        <Content className="content" results={this.state.results} />
+        <Content results={this.state.results} />
       </>
     );
   };
