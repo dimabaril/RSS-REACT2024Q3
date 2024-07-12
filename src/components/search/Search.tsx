@@ -1,5 +1,4 @@
-import { useState } from "react";
-
+import { useStateLocalStorage } from "../../hooks/useStateLocalStorage";
 import "./Search.scss";
 
 interface SearchProps {
@@ -7,18 +6,18 @@ interface SearchProps {
 }
 
 export default function Search(props: SearchProps) {
-  const savedSearchInput = localStorage.getItem("searchText") || "";
-  const [searchText, setSearchText] = useState(savedSearchInput);
+  const [searchText, setSearchText, setLocalStorageSearchText] =
+    useStateLocalStorage("searchText", "");
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(event.target.value);
   };
 
-  const handleSearch = () => {
+  function handleSearch() {
     const trimmedSearchText = searchText.trim();
-    localStorage.setItem("searchText", trimmedSearchText);
+    setLocalStorageSearchText(trimmedSearchText);
     props.onSearch(trimmedSearchText);
-  };
+  }
 
   return (
     <section className="search">
