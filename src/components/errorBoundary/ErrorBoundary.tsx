@@ -22,17 +22,15 @@ const resetApplication = () => {
   window.location.reload();
 };
 
-export class ErrorFallbackUI extends Component {
-  render() {
-    return (
-      <div className="error">
-        Error caught by ErrorBoundary
-        <button className="error__button" onClick={resetApplication}>
-          Restart Application
-        </button>
-      </div>
-    );
-  }
+export function ErrorFallbackUI() {
+  return (
+    <div className="error">
+      Error caught by ErrorBoundary
+      <button className="error__button" onClick={resetApplication}>
+        Restart Application
+      </button>
+    </div>
+  );
 }
 
 export class ErrorBoundary extends Component<Props, State> {

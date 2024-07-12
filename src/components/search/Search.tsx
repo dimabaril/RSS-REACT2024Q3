@@ -1,56 +1,42 @@
-import { Component } from "react";
+import { useState } from "react";
 
 import "./Search.scss";
 
 interface SearchProps {
-  className?: string;
   onSearch: (searchText: string) => void;
 }
 
-interface SearchState {
-  searchText: string;
-}
+export default function Search(props: SearchProps) {
+  const savedSearchInput = localStorage.getItem("searchText") || "";
+  const [searchText, setSearchText] = useState(savedSearchInput);
 
-export default class Search extends Component<SearchProps, SearchState> {
-  constructor(props: SearchProps) {
-    super(props);
-    const savedSearchInput = localStorage.getItem("searchText") || "";
-    this.state = {
-      searchText: savedSearchInput,
-    };
-    this.props.onSearch(this.state.searchText);
-  }
-
-  handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ searchText: event.target.value });
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(event.target.value);
   };
 
-  handleSearch = () => {
-    const trimmedSearchText = this.state.searchText.trim();
+  const handleSearch = () => {
+    const trimmedSearchText = searchText.trim();
     localStorage.setItem("searchText", trimmedSearchText);
-    this.props.onSearch(trimmedSearchText);
+    props.onSearch(trimmedSearchText);
   };
 
-  render = () => {
-    const baseClass = this.props.className || "search";
-    return (
-      <section className={baseClass}>
-        <input
-          className={`${baseClass}__input`}
-          type="text"
-          placeholder="Search..."
-          value={this.state.searchText}
-          onChange={this.handleInputChange}
-          onKeyUp={(event) => {
-            if (event.key === "Enter") {
-              this.handleSearch();
-            }
-          }}
-        />
-        <button className={`${baseClass}__button`} onClick={this.handleSearch}>
-          Search
-        </button>
-      </section>
-    );
-  };
+  return (
+    <section className="search">
+      <input
+        className="search__input"
+        type="text"
+        placeholder="Search..."
+        value={searchText}
+        onChange={handleInputChange}
+        onKeyUp={(event) => {
+          if (event.key === "Enter") {
+            handleSearch();
+          }
+        }}
+      />
+      <button className="search__button" onClick={handleSearch}>
+        Search
+      </button>
+    </section>
+  );
 }
