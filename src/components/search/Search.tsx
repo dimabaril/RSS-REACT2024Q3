@@ -1,41 +1,45 @@
+import { Form, useSubmit } from "react-router-dom";
+
 import { useStateLocalStorage } from "../../hooks/useStateLocalStorage";
 import "./Search.scss";
 
-interface SearchProps {
-  onSearch: (searchText: string) => void;
-}
-
-export default function Search(props: SearchProps) {
+export default function Search() {
   const [searchText, setSearchText, setLocalStorageSearchText] =
     useStateLocalStorage("searchText", "");
+  const submit = useSubmit();
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(event.target.value);
   };
 
-  function handleSearch() {
+  function handleSearch(
+    event:
+      | React.MouseEvent<HTMLButtonElement>
+      | React.KeyboardEvent<HTMLInputElement>,
+  ) {
+    event.preventDefault();
     const trimmedSearchText = searchText.trim();
     setLocalStorageSearchText(trimmedSearchText);
-    props.onSearch(trimmedSearchText);
+    localStorage.removeItem("page");
+    submit(event.currentTarget.form);
   }
 
   return (
-    <section className="search">
-      <input
-        className="search__input"
-        type="text"
-        placeholder="Search..."
-        value={searchText}
-        onChange={handleInputChange}
-        onKeyUp={(event) => {
-          if (event.key === "Enter") {
-            handleSearch();
-          }
-        }}
-      />
-      <button className="search__button" onClick={handleSearch}>
-        Search
-      </button>
-    </section>
+    <div className="search">
+      <Form className="search__form">
+        <input
+          id="q"
+          className="search__input"
+          type="text"
+          placeholder="Search..."
+          value={searchText}
+          onChange={handleInputChange}
+          name="q"
+        />
+        <button className="search__button" onClick={handleSearch}>
+          Search
+        </button>
+      </Form>
+    </div>
   );
 }

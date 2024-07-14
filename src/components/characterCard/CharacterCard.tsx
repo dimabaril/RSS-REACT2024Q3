@@ -1,38 +1,81 @@
+import { useEffect } from "react";
+import {
+  matchPath,
+  useLoaderData,
+  useNavigate,
+  useNavigation,
+} from "react-router-dom";
+
+import updateSearchParamsFromLS from "../../helpers/updateSearchParamFromLS";
 import { Character } from "../../interfaces/interfaces";
+import Loader from "../loader/Loader";
 import "./CharacterCard.scss";
 
-interface CharacterCardProps {
-  character: Character;
-}
+export default function CharacterCard() {
+  const { character, id } = useLoaderData() as {
+    character: Character;
+    id: string;
+  };
+  const navigation = useNavigation();
+  const navigate = useNavigate();
 
-export default function CharacterCard(props: CharacterCardProps) {
-  const { character } = props;
+  const isLoading =
+    navigation.state === "loading" &&
+    matchPath("/people/:id", navigation.location.pathname);
+
+  const clickHandler = (event: MouseEvent) => {
+    const target = event.target as HTMLElement;
+    if (target.closest(".character-card") || target.closest(".nav-list__item"))
+      return;
+
+    navigate("/");
+    updateSearchParamsFromLS();
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", clickHandler);
+    return () => {
+      document.removeEventListener("click", clickHandler);
+    };
+  });
+
+  const img = `https://starwars-visualguide.com/assets/img/characters/${id}.jpg`;
+
   return (
-    <div className="character-card">
-      <div className="character-card__name">name: {character.name}</div>
-      <ul className="character-card__description">
-        <li className="character-card__description-item">
-          birth year: {character.birth_year}
-        </li>
-        <li className="character-card__description-item">
-          gender: {character.gender}
-        </li>
-        <li className="character-card__description-item">
-          height: {character.height} cm.
-        </li>
-        <li className="character-card__description-item">
-          mass: {character.mass} kg.
-        </li>
-        <li className="character-card__description-item">
-          skin color: {character.skin_color}
-        </li>
-        <li className="character-card__description-item">
-          hair color: {character.hair_color}
-        </li>
-        <li className="character-card__description-item">
-          eye color: {character.eye_color}
-        </li>
-      </ul>
-    </div>
+    <>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <section className="character-card">
+          <ul className="character-card__description">
+            <div className="character-card__name">name: {character.name}</div>
+            <li className="character-card__description-item">
+              birth year: {character.birth_year}
+            </li>
+            <li className="character-card__description-item">
+              gender: {character.gender}
+            </li>
+            <li className="character-card__description-item">
+              height: {character.height} cm.
+            </li>
+            <li className="character-card__description-item">
+              mass: {character.mass} kg.
+            </li>
+            <li className="character-card__description-item">
+              skin color: {character.skin_color}
+            </li>
+            <li className="character-card__description-item">
+              hair color: {character.hair_color}
+            </li>
+            <li className="character-card__description-item">
+              eye color: {character.eye_color}
+            </li>
+          </ul>
+          <div className="character-card__img">
+            <img src={img} alt="img" />
+          </div>
+        </section>
+      )}
+    </>
   );
 }

@@ -3,6 +3,7 @@ import { useState } from "react";
 export function useStateLocalStorage(key: string, initialValue: string) {
   const [value, setValue] = useState(() => {
     const savedValue = localStorage.getItem(key);
+
     return savedValue !== null ? savedValue : initialValue;
   });
 

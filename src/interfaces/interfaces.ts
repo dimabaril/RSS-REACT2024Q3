@@ -15,6 +15,13 @@ export interface Character {
   skin_color: string;
   species: URL[];
   starships: URL[];
-  url: URL;
+  url: string;
   vehicles: URL[];
+}
+
+export interface CharactersResponse {
+  count: number;
+  next: URL | null;
+  previous: URL | null;
+  results: Character[];
 }
