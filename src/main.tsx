@@ -2,11 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
+import Error from "./components/_error/Error.tsx";
+import Root from "./components/_root/Root.tsx";
+import { loader as rootLoader } from "./components/_root/loader.tsx";
 import CharacterCard from "./components/characterCard/CharacterCard.tsx";
 import { loader as characterLoader } from "./components/characterCard/loader.tsx";
-import Error from "./components/error/Error.tsx";
-import Root from "./components/root/Root.tsx";
-import { loader as rootLoader } from "./components/root/loader.tsx";
 import "./index.css";
 
 const router = createBrowserRouter([
