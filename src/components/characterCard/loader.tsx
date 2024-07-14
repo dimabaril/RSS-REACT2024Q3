@@ -6,7 +6,6 @@ import { fetchSWPerson } from "../../services/api";
 export async function loader({
   params,
 }: LoaderFunctionArgs): Promise<{ character: Character; id: string }> {
-  console.log("CharacterCard loader", params);
   const { id } = params;
   if (!id) {
     throw new Error("URL parameter is missing");
