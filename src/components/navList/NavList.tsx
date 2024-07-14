@@ -28,7 +28,12 @@ export default function NavList(props: ContentProps) {
                       `nav-link ${isActive ? "active" : isPending ? "pending" : ""}`
                     }
                   >
-                    {character.name ? character.name : "No Name"}
+                    <span>{character.name ? character.name : "No Name"}</span>
+                    <span>
+                      {character.gender
+                        ? ` -${character.gender}-`
+                        : " No gender"}
+                    </span>
                   </NavLink>
                 </li>
               );
