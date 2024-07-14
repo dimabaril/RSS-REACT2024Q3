@@ -9,9 +9,9 @@ import {
 
 import updateSearchParamsFromLS from "../../helpers/updateSearchParamFromLS";
 import { CharactersResponse } from "../../interfaces/interfaces";
-import NavList from "../_navList/NavList";
 import ErrorButton from "../errorButton/ErrorButton";
 import Loader from "../loader/Loader";
+import NavList from "../navList/NavList";
 import Pagination from "../pagination/Pagination";
 import Search from "../search/Search";
 import "./Root.css";
