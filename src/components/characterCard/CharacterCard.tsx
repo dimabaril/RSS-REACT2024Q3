@@ -23,13 +23,16 @@ export default function CharacterCard() {
     navigation.state === "loading" &&
     matchPath("/people/:id", navigation.location.pathname);
 
+  const close = () => {
+    navigate("/");
+    updateSearchParamsFromLS();
+  };
+
   const clickHandler = (event: MouseEvent) => {
     const target = event.target as HTMLElement;
     if (target.closest(".character-card") || target.closest(".nav-list__item"))
       return;
-
-    navigate("/");
-    updateSearchParamsFromLS();
+    close();
   };
 
   useEffect(() => {
@@ -48,7 +51,7 @@ export default function CharacterCard() {
       ) : (
         <section className="character-card">
           <ul className="character-card__description">
-            <div className="character-card__name">name: {character.name}</div>
+            <div className="character-card__name">{character.name}</div>
             <li className="character-card__description-item">
               birth year: {character.birth_year}
             </li>
@@ -74,6 +77,9 @@ export default function CharacterCard() {
           <div className="character-card__img">
             <img src={img} alt="img" />
           </div>
+          <button className="character-card__close" onClick={close}>
+            ×
+          </button>
         </section>
       )}
     </>

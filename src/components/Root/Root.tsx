@@ -35,7 +35,7 @@ export default function Root() {
     }
     if (!(location.pathname === "/")) return;
     updateSearchParamsFromLS();
-    // interesting part then lint argues about missing dependencies but it's not necessary to add them
+    // interesting part, lint argues about missing dependencies, but it's not necessary to add them and it's work different without them
   }, [location.pathname, q]);
 
   return (
