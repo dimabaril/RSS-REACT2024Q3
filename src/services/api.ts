@@ -27,7 +27,6 @@ export const fetchSWPerson = async (id: string): Promise<Character> => {
 
   const response = await fetch(endpoint + id);
   if (!response.ok) {
-    console.log("fetchSWPerson response", response);
     throw new Error(`Network response wasn't ok: ${response.status}`);
   }
   const data = await response.json();
