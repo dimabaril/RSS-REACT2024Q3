@@ -3,7 +3,7 @@ import { LoaderFunctionArgs } from "react-router-dom";
 import { Character } from "../../interfaces/interfaces";
 import { fetchSWPerson } from "../../services/api";
 
-export async function loader({
+export async function characterCardLoader({
   params,
 }: LoaderFunctionArgs): Promise<{ character: Character; id: string }> {
   const { id } = params;
