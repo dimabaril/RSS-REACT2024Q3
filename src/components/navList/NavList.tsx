@@ -14,7 +14,7 @@ export default function NavList(props: ContentProps) {
   return (
     <>
       {response.results.length === 0 ? (
-        <div className="nav-list">"No results found"</div>
+        <div className="nav-list">No results found</div>
       ) : (
         <>
           <ul className="nav-list">

@@ -7,13 +7,13 @@ import {
 } from "react-router-dom";
 
 import updateSearchParamsFromLS from "../../helpers/updateSearchParamFromLS";
-import { Character } from "../../interfaces/interfaces";
+import { CharacterDetailResponse } from "../../interfaces/interfaces";
 import Loader from "../loader/Loader";
 import "./CharacterCard.scss";
 
 export default function CharacterCard() {
   const { character, id } = useLoaderData() as {
-    character: Character;
+    character: CharacterDetailResponse;
     id: string;
   };
   const navigation = useNavigation();

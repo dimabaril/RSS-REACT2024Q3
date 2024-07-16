@@ -1,4 +1,7 @@
-import { Character, CharactersResponse } from "../interfaces/interfaces";
+import {
+  CharacterDetailResponse,
+  CharactersResponse,
+} from "../interfaces/interfaces";
 
 export const fetchSWPeople = async (
   term: string | null = null,
@@ -19,10 +22,14 @@ export const fetchSWPeople = async (
     throw new Error(`Network response wasn't ok: ${response.status}`);
   }
   const data = await response.json();
+  console.log(data);
+
   return data;
 };
 
-export const fetchSWPerson = async (id: string): Promise<Character> => {
+export const fetchSWPerson = async (
+  id: string,
+): Promise<CharacterDetailResponse> => {
   const endpoint = "https://swapi.dev/api/people/";
 
   const response = await fetch(endpoint + id);

@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
+import BlankCard from "./components/characterCard/BlankCard.tsx";
 import CharacterCard from "./components/characterCard/CharacterCard.tsx";
 import { characterCardLoader } from "./components/characterCard/CharacterCardLoader.ts";
 import Error from "./components/error/Error.tsx";
@@ -9,7 +10,7 @@ import Root from "./components/root/Root.tsx";
 import { rootLoader } from "./components/root/RootLoader.tsx";
 import "./index.css";
 
-const router = createBrowserRouter([
+export const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
@@ -21,7 +22,7 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <div>Select some persona, for details</div>,
+            element: <BlankCard />,
           },
           {
             path: "people/:id",

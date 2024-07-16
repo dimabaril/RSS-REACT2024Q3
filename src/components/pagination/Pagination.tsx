@@ -16,16 +16,22 @@ export default function Pagination(props: ContentProps) {
 
   const handlerPage = (page: string | null) => () => {
     if (!page) return;
-    setSearchParams((params) => {
-      const newParams = new URLSearchParams(params);
+    // setSearchParams((params) => {
+    //   const newParams = new URLSearchParams(params);
+    //   newParams.set("page", page);
+    //   const q = params.get("searchText");
+    //   if (q) {
+    //     newParams.set("searchText", q);
+    //   }
+    //   return newParams;
+    // });
+    setSearchParams((currentParams) => {
+      const newParams = new URLSearchParams(currentParams);
       newParams.set("page", page);
-      const q = params.get("searchText");
-      if (q) {
-        newParams.set("searchText", q);
-      }
       return newParams;
     });
-    localStorage.setItem("page", page);
+
+    // localStorage.setItem("page", page);
   };
 
   return (

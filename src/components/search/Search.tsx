@@ -20,7 +20,9 @@ export default function Search() {
     event.preventDefault();
     const trimmedSearchText = searchText.trim();
     setLocalStorageSearchText(trimmedSearchText);
-    localStorage.removeItem("page");
+
+    // localStorage.removeItem("page");
+
     submit(event.currentTarget.form);
   }
 

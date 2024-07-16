@@ -1,11 +1,14 @@
 import { LoaderFunctionArgs } from "react-router-dom";
 
-import { Character } from "../../interfaces/interfaces";
+import { CharacterDetailResponse } from "../../interfaces/interfaces";
 import { fetchSWPerson } from "../../services/api";
 
 export async function characterCardLoader({
   params,
-}: LoaderFunctionArgs): Promise<{ character: Character; id: string }> {
+}: LoaderFunctionArgs): Promise<{
+  character: CharacterDetailResponse;
+  id: string;
+}> {
   const { id } = params;
   if (!id) {
     throw new Error("URL parameter is missing");
