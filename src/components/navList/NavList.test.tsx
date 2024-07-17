@@ -22,7 +22,11 @@ describe("Card List component", () => {
   });
 
   test("an appropriate message is displayed if no cards are present", () => {
-    render(<NavList response={MockedEmptyCharactersResponse} />);
+    render(
+      <MemoryRouter>
+        <NavList response={MockedEmptyCharactersResponse} />
+      </MemoryRouter>,
+    );
     const message = screen.getByText("No results found");
     expect(message).toBeInTheDocument();
   });

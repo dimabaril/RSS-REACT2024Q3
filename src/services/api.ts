@@ -22,8 +22,6 @@ export const fetchSWPeople = async (
     throw new Error(`Network response wasn't ok: ${response.status}`);
   }
   const data = await response.json();
-  console.log(data);
-
   return data;
 };
 

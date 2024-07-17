@@ -26,7 +26,6 @@ Object.defineProperty(window, "localStorage", {
 
 describe("rootLoader", () => {
   it("loads data using query parameters from the URL", async () => {
-    // Мокинг fetchSWPeople
     const mockFetchSWPeople = vi
       .spyOn(api, "fetchSWPeople")
       .mockResolvedValueOnce(mockedCharactersResponse);
@@ -57,7 +56,7 @@ describe("rootLoader", () => {
 
     const result = await rootLoader({ request } as LoaderFunctionArgs);
 
-    expect(mockFetchSWPeople).toHaveBeenCalledWith("yoda", "2");
+    expect(mockFetchSWPeople).toHaveBeenCalledWith("yoda", "1");
     expect(result).toEqual({ response: mockedCharactersResponse, q: "yoda" });
 
     window.localStorage.clear();

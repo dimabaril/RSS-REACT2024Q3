@@ -8,7 +8,6 @@ import Error from "./components/error/Error.tsx";
 import Root from "./components/root/Root.tsx";
 import { rootLoader } from "./components/root/RootLoader.tsx";
 import "./index.css";
-// import { router } from "./router.tsx";
 import {
   mockedCharacterDetailResponse,
   mockedRootLoaderResponse,

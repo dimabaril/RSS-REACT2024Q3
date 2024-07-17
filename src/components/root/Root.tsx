@@ -7,7 +7,6 @@ import {
   useNavigation,
 } from "react-router-dom";
 
-import updateSearchParamsFromLS from "../../helpers/updateSearchParamFromLS";
 import { CharactersResponse } from "../../interfaces/interfaces";
 import ErrorButton from "../errorButton/ErrorButton";
 import Loader from "../loader/Loader";
@@ -33,9 +32,6 @@ export default function Root() {
     if (element && element instanceof HTMLInputElement && q) {
       element.value = q;
     }
-    if (!(location.pathname === "/")) return;
-    updateSearchParamsFromLS();
-    // interesting part, lint argues about missing dependencies, but it's not necessary to add them and it's work different without them
   }, [location.pathname, q]);
 
   return (

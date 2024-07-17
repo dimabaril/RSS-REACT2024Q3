@@ -1,12 +1,13 @@
 import { createBrowserRouter } from "react-router-dom";
 
+import BlankCard from "./components/characterCard/BlankCard";
 import CharacterCard from "./components/characterCard/CharacterCard";
 import { characterCardLoader } from "./components/characterCard/CharacterCardLoader";
 import Error from "./components/error/Error";
 import Root from "./components/root/Root";
 import { rootLoader } from "./components/root/RootLoader";
 
-export const router = createBrowserRouter([
+export const routs = [
   {
     path: "/",
     element: <Root />,
@@ -18,7 +19,7 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <div>Select some persona, for details</div>,
+            element: <BlankCard />,
           },
           {
             path: "people/:id",
@@ -29,4 +30,6 @@ export const router = createBrowserRouter([
       },
     ],
   },
-]);
+];
+
+export const router = createBrowserRouter(routs);

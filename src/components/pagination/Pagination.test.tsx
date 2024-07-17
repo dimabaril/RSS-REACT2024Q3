@@ -65,23 +65,4 @@ describe("Pagination Component", () => {
     expect(screen.getByText("Prev")).not.toBeDisabled();
     expect(screen.getByText("Next")).toBeDisabled();
   });
-
-  // it("updates search params and localStorage on next button click", () => {
-  //   const response = {
-  //     previous: "http://example.com/api/characters?page=1",
-  //     next: "http://example.com/api/characters?page=3",
-  //     count: 0,
-  //     results: [],
-  //   };
-
-  //   render(
-  //     <MemoryRouter>
-  //       <Pagination response={response} />
-  //     </MemoryRouter>,
-  //   );
-
-  //   fireEvent.click(screen.getByText("Next"));
-
-  //   expect(localStorage.getItem("page")).toBe("3");
-  // });
 });
