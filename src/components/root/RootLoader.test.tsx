@@ -44,7 +44,7 @@ describe("rootLoader", () => {
 
   it("loads data using values from localStorage when URL parameters are absent", async () => {
     window.localStorage.setItem("searchText", "yoda");
-    window.localStorage.setItem("page", "2");
+    window.localStorage.setItem("temporaryPage", "2");
 
     const mockFetchSWPeople = vi
       .spyOn(api, "fetchSWPeople")
@@ -56,7 +56,7 @@ describe("rootLoader", () => {
 
     const result = await rootLoader({ request } as LoaderFunctionArgs);
 
-    expect(mockFetchSWPeople).toHaveBeenCalledWith("yoda", "1");
+    expect(mockFetchSWPeople).toHaveBeenCalledWith("yoda", null);
     expect(result).toEqual({ response: mockedCharactersResponse, q: "yoda" });
 
     window.localStorage.clear();

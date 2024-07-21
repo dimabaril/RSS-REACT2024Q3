@@ -16,7 +16,7 @@ export default function NavList(props: ContentProps) {
     if (location.pathname !== "/") return;
     const page =
       new URLSearchParams(location.search).get("page")?.toString() || "1";
-    localStorage.setItem("page", page);
+    localStorage.setItem("temporaryPage", page);
   };
 
   return (

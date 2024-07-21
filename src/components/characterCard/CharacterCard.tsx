@@ -6,10 +6,6 @@ import {
   useNavigation,
 } from "react-router-dom";
 
-import {
-  updatePageParamFromLS,
-  updateSearchParamsFromLS,
-} from "../../helpers/updateSearchParamFromLS";
 import { CharacterDetailResponse } from "../../interfaces/interfaces";
 import Loader from "../loader/Loader";
 import "./CharacterCard.scss";
@@ -27,9 +23,15 @@ export default function CharacterCard() {
     matchPath("/people/:id", navigation.location.pathname);
 
   const close = () => {
-    navigate("/");
-    updateSearchParamsFromLS();
-    updatePageParamFromLS();
+    const searchTerm = localStorage.getItem("searchText") || "";
+    const currentPage = localStorage.getItem("temporaryPage") || "";
+
+    const searchParams = new URLSearchParams();
+    if (searchTerm) searchParams.set("q", searchTerm);
+    if (currentPage) searchParams.set("page", currentPage);
+
+    console.log(searchParams);
+    navigate(`/?${searchParams.toString()}`);
   };
 
   const clickHandler = (event: MouseEvent) => {

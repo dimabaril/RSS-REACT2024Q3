@@ -8,7 +8,7 @@ export async function rootLoader({ request }: LoaderFunctionArgs) {
   const q =
     url.searchParams.get("q") || localStorage.getItem("searchText") || null;
 
-  const page = url.searchParams.get("page") || "1";
+  const page = url.searchParams.get("page") || null;
 
   const response = await fetchSWPeople(q, page);
   return { response, q };
