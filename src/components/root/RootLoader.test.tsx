@@ -44,7 +44,6 @@ describe("rootLoader", () => {
 
   it("loads data using values from localStorage when URL parameters are absent", async () => {
     window.localStorage.setItem("searchText", "yoda");
-    window.localStorage.setItem("temporaryPage", "2");
 
     const mockFetchSWPeople = vi
       .spyOn(api, "fetchSWPeople")

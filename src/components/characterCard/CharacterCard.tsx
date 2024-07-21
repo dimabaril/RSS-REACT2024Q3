@@ -23,15 +23,8 @@ export default function CharacterCard() {
     matchPath("/people/:id", navigation.location.pathname);
 
   const close = () => {
-    const searchTerm = localStorage.getItem("searchText") || "";
-    const currentPage = localStorage.getItem("temporaryPage") || "";
-
-    const searchParams = new URLSearchParams();
-    if (searchTerm) searchParams.set("q", searchTerm);
-    if (currentPage) searchParams.set("page", currentPage);
-
-    console.log(searchParams);
-    navigate(`/?${searchParams.toString()}`);
+    const location = localStorage.getItem("location");
+    navigate(location ? JSON.parse(location) : "/");
   };
 
   const clickHandler = (event: MouseEvent) => {

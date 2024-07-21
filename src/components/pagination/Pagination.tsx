@@ -28,6 +28,7 @@ export default function Pagination(props: ContentProps) {
       <button onClick={handlerPage(prevPage)} disabled={!prevPage}>
         Prev
       </button>
+      <div>Page: {Number(prevPage) + 1}</div>
       <button onClick={handlerPage(nextPage)} disabled={!nextPage}>
         Next
       </button>
