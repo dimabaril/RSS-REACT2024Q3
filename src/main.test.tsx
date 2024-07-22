@@ -1,7 +1,9 @@
 import { render, screen, waitFor } from "@testing-library/react";
+import { Provider } from "react-redux";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { describe, expect, test, vi } from "vitest";
 
+import { store } from "./app/store.ts";
 import CharacterCard from "./components/characterCard/CharacterCard.tsx";
 import { characterCardLoader } from "./components/characterCard/CharacterCardLoader.ts";
 import Error from "./components/error/Error.tsx";
@@ -58,10 +60,12 @@ describe("main", () => {
 
   test("bid to select a character to display detailed information", async () => {
     render(
-      <RouterProvider
-        router={router}
-        fallbackElement={<div>Loading...</div>}
-      />,
+      <Provider store={store}>
+        <RouterProvider
+          router={router}
+          fallbackElement={<div>Loading...</div>}
+        />
+      </Provider>,
     );
 
     await waitFor(() => {
@@ -73,10 +77,12 @@ describe("main", () => {
 
   test("click on a character to display detailed information", async () => {
     render(
-      <RouterProvider
-        router={router}
-        fallbackElement={<div>Loading...</div>}
-      />,
+      <Provider store={store}>
+        <RouterProvider
+          router={router}
+          fallbackElement={<div>Loading...</div>}
+        />
+      </Provider>,
     );
 
     const lukeSkywalker = screen.getByText("Luke Skywalker");

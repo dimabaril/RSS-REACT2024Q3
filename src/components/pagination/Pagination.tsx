@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import { CharactersResponse } from "../../interfaces/interfaces";
@@ -8,11 +7,13 @@ interface ContentProps {
   response: CharactersResponse;
 }
 export default function Pagination(props: ContentProps) {
-  const [response] = useState<CharactersResponse>(props.response);
   const [, setSearchParams] = useSearchParams();
-  const { previous, next } = response;
-  const prevPage = previous ? new URL(previous).searchParams.get("page") : null;
-  const nextPage = next ? new URL(next).searchParams.get("page") : null;
+  const prevPage = props.response.previous
+    ? new URL(props.response.previous).searchParams.get("page")
+    : null;
+  const nextPage = props.response.next
+    ? new URL(props.response.next).searchParams.get("page")
+    : null;
 
   const handlerPage = (page: string | null) => () => {
     if (!page) return;

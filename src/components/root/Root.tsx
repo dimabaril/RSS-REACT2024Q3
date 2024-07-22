@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import {
   Outlet,
   matchPath,
@@ -6,6 +7,8 @@ import {
   useNavigation,
 } from "react-router-dom";
 
+import { Counter } from "../../features/counter/Counter";
+import { setPeople } from "../../features/people/peopleSlice";
 import { CharactersResponse } from "../../interfaces/interfaces";
 import ErrorButton from "../errorButton/ErrorButton";
 import Loader from "../loader/Loader";
@@ -21,6 +24,12 @@ export default function Root() {
   };
   const navigation = useNavigation();
 
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setPeople(response));
+  }, [dispatch, response]);
+
   const isLoading =
     navigation.state === "loading" &&
     matchPath("/", navigation.location.pathname);
@@ -35,6 +44,7 @@ export default function Root() {
   return (
     <>
       <section className="side-nav">
+        <Counter />
         <ErrorButton />
         <Search />
         {isLoading ? <Loader /> : <NavList response={response} />}

@@ -1,5 +1,8 @@
+import { useDispatch, useSelector } from "react-redux";
 import { Form, useSubmit } from "react-router-dom";
 
+import type { RootState } from "../../app/store";
+import { increment } from "../../features/counter/counterSlice";
 import { useStateLocalStorage } from "../../hooks/useStateLocalStorage";
 import "./Search.scss";
 
@@ -7,6 +10,9 @@ export default function Search() {
   const [searchText, setSearchText, setLocalStorageSearchText] =
     useStateLocalStorage("searchText", "");
   const submit = useSubmit();
+
+  const dispatch = useDispatch();
+  const count = useSelector((state: RootState) => state.counter.value);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(event.target.value);
@@ -18,6 +24,7 @@ export default function Search() {
       | React.KeyboardEvent<HTMLInputElement>,
   ) {
     event.preventDefault();
+    dispatch(increment());
     const trimmedSearchText = searchText.trim();
     setLocalStorageSearchText(trimmedSearchText);
     submit(event.currentTarget.form);
@@ -36,7 +43,7 @@ export default function Search() {
           name="q"
         />
         <button className="search__button" onClick={handleSearch}>
-          Search
+          Search {count}
         </button>
       </Form>
     </div>

@@ -23,7 +23,7 @@ export default function CharacterCard() {
     matchPath("/people/:id", navigation.location.pathname);
 
   const close = () => {
-    const location = localStorage.getItem("location");
+    const location = localStorage.getItem("onCloseDetailsLocation");
     navigate(location ? JSON.parse(location) : "/");
   };
 

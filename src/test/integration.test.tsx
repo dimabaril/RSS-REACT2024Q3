@@ -1,16 +1,20 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { Provider } from "react-redux";
 import { RouterProvider, createMemoryRouter } from "react-router-dom";
 import { describe, expect, it } from "vitest";
 
+import { store } from "../app/store.ts";
 import { router, routs } from "../router.tsx";
 
 describe("CharacterDetails Component", () => {
   it("displays correct number of cards", async () => {
     render(
-      <RouterProvider
-        router={router}
-        fallbackElement={<div>Loading...</div>}
-      />,
+      <Provider store={store}>
+        <RouterProvider
+          router={router}
+          fallbackElement={<div>Loading...</div>}
+        />
+      </Provider>,
     );
     await waitFor(() => {
       expect(screen.getAllByRole("link").length).toBe(10);
@@ -19,10 +23,12 @@ describe("CharacterDetails Component", () => {
 
   it("displays loading indicator while fetching data main page", async () => {
     render(
-      <RouterProvider
-        router={router}
-        fallbackElement={<div>Loading...</div>}
-      />,
+      <Provider store={store}>
+        <RouterProvider
+          router={router}
+          fallbackElement={<div>Loading...</div>}
+        />
+      </Provider>,
     );
     await waitFor(() => {
       expect(
@@ -33,10 +39,12 @@ describe("CharacterDetails Component", () => {
 
   it("displays hint when no character is selected", async () => {
     render(
-      <RouterProvider
-        router={router}
-        fallbackElement={<div>Loading...</div>}
-      />,
+      <Provider store={store}>
+        <RouterProvider
+          router={router}
+          fallbackElement={<div>Loading...</div>}
+        />
+      </Provider>,
     );
     await waitFor(() => {
       expect(
@@ -51,10 +59,12 @@ describe("CharacterDetails Component", () => {
       initialIndex: 0,
     });
     render(
-      <RouterProvider
-        router={router}
-        fallbackElement={<div>Loading...</div>}
-      />,
+      <Provider store={store}>
+        <RouterProvider
+          router={router}
+          fallbackElement={<div>Loading...</div>}
+        />
+      </Provider>,
     );
 
     await waitFor(() => {
@@ -68,10 +78,12 @@ describe("CharacterDetails Component", () => {
       initialIndex: 0,
     });
     render(
-      <RouterProvider
-        router={router}
-        fallbackElement={<div>Loading...</div>}
-      />,
+      <Provider store={store}>
+        <RouterProvider
+          router={router}
+          fallbackElement={<div>Loading...</div>}
+        />
+      </Provider>,
     );
 
     await waitFor(() => {
@@ -91,10 +103,12 @@ describe("CharacterDetails Component", () => {
       initialIndex: 0,
     });
     render(
-      <RouterProvider
-        router={router}
-        fallbackElement={<div>Loading...</div>}
-      />,
+      <Provider store={store}>
+        <RouterProvider
+          router={router}
+          fallbackElement={<div>Loading...</div>}
+        />
+      </Provider>,
     );
 
     await waitFor(() => {
@@ -121,10 +135,12 @@ describe("CharacterDetails Component", () => {
       initialIndex: 0,
     });
     render(
-      <RouterProvider
-        router={router}
-        fallbackElement={<div>Loading...</div>}
-      />,
+      <Provider store={store}>
+        <RouterProvider
+          router={router}
+          fallbackElement={<div>Loading...</div>}
+        />
+      </Provider>,
     );
 
     await waitFor(() => {
@@ -151,10 +167,12 @@ describe("CharacterDetails Component", () => {
       initialIndex: 0,
     });
     render(
-      <RouterProvider
-        router={router}
-        fallbackElement={<div>Loading...</div>}
-      />,
+      <Provider store={store}>
+        <RouterProvider
+          router={router}
+          fallbackElement={<div>Loading...</div>}
+        />
+      </Provider>,
     );
 
     await waitFor(() => {

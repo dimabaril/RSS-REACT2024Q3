@@ -1,4 +1,4 @@
-import { useState } from "react";
+// import { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 
 import { CharactersResponse } from "../../interfaces/interfaces";
@@ -9,11 +9,12 @@ interface ContentProps {
 }
 
 export default function NavList(props: ContentProps) {
-  const [response] = useState<CharactersResponse>(props.response);
+  // const [response] = useState<CharactersResponse>(props.response);
+  const { response } = props;
   const location = useLocation();
 
   if (location.pathname === "/")
-    localStorage.setItem("location", JSON.stringify(location));
+    localStorage.setItem("onCloseDetailsLocation", JSON.stringify(location));
 
   return (
     <>
@@ -27,7 +28,7 @@ export default function NavList(props: ContentProps) {
               return (
                 <li key={character.url.toString()} className="nav-list__item">
                   <NavLink
-                    to={`/people/${Id}`}
+                    to={`/people/${Id}${location.search}`}
                     className={({ isActive, isPending }) =>
                       `nav-link ${isActive ? "active" : isPending ? "pending" : ""}`
                     }
