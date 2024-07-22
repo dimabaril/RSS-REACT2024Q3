@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import {
   Outlet,
   matchPath,
@@ -21,7 +20,6 @@ export default function Root() {
     q: string;
   };
   const navigation = useNavigation();
-  const location = useLocation();
 
   const isLoading =
     navigation.state === "loading" &&
@@ -32,7 +30,7 @@ export default function Root() {
     if (element && element instanceof HTMLInputElement && q) {
       element.value = q;
     }
-  }, [location.pathname, q]);
+  }, [q]);
 
   return (
     <>

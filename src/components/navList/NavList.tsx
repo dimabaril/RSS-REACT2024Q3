@@ -12,10 +12,8 @@ export default function NavList(props: ContentProps) {
   const [response] = useState<CharactersResponse>(props.response);
   const location = useLocation();
 
-  const handleLinkClick = () => {
-    if (location.pathname !== "/") return;
+  if (location.pathname === "/")
     localStorage.setItem("location", JSON.stringify(location));
-  };
 
   return (
     <>
@@ -30,7 +28,6 @@ export default function NavList(props: ContentProps) {
                 <li key={character.url.toString()} className="nav-list__item">
                   <NavLink
                     to={`/people/${Id}`}
-                    onClick={handleLinkClick}
                     className={({ isActive, isPending }) =>
                       `nav-link ${isActive ? "active" : isPending ? "pending" : ""}`
                     }
