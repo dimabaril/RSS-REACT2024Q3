@@ -1,15 +1,17 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import {
-  Outlet,
-  matchPath,
-  useLoaderData,
-  useNavigation,
+  Outlet, // matchPath,
+  // useLoaderData,
+  // useNavigation,
+  useSearchParams,
 } from "react-router-dom";
 
-import { Counter } from "../../features/counter/Counter";
+import { useAppDispatch } from "../../app/hooks";
+// import { Counter } from "../../features/counter/Counter";
 import { setPeople } from "../../features/people/peopleSlice";
-import { CharactersResponse } from "../../interfaces/interfaces";
+// import { Characters } from "../../interfaces/interfaces";
+import { starWarsApi } from "../../services/api";
 import ErrorButton from "../errorButton/ErrorButton";
 import Loader from "../loader/Loader";
 import NavList from "../navList/NavList";
@@ -18,37 +20,45 @@ import Search from "../search/Search";
 import "./Root.css";
 
 export default function Root() {
-  const { response, q } = useLoaderData() as {
-    response: CharactersResponse;
-    q: string;
-  };
-  const navigation = useNavigation();
+  console.log("Root");
+  // const { response, search } = useLoaderData() as {
+  //   response: Characters;
+  //   search: string;
+  // };
+  // const navigation = useNavigation();
 
-  const dispatch = useDispatch();
+  // const isLoading =
+  //   navigation.state === "loading" &&
+  //   matchPath("/", navigation.location.pathname);
+
+  // useEffect(() => {
+  //   const element = document.getElementById("search");
+  //   if (element && element instanceof HTMLInputElement && search) {
+  //     element.value = search;
+  //   }
+  // }, [search]);
+
+  const [searchParams] = useSearchParams();
+
+  const dispatch = useAppDispatch();
+
+  const { data, error, isFetching } = starWarsApi.useGetCharactersQuery(
+    searchParams.toString(),
+  );
 
   useEffect(() => {
-    dispatch(setPeople(response));
-  }, [dispatch, response]);
-
-  const isLoading =
-    navigation.state === "loading" &&
-    matchPath("/", navigation.location.pathname);
-
-  useEffect(() => {
-    const element = document.getElementById("q");
-    if (element && element instanceof HTMLInputElement && q) {
-      element.value = q;
-    }
-  }, [q]);
+    if (!data) return;
+    dispatch(setPeople(data));
+  }, [dispatch, data]);
 
   return (
     <>
       <section className="side-nav">
-        <Counter />
+        {/* <Counter /> */}
         <ErrorButton />
         <Search />
-        {isLoading ? <Loader /> : <NavList response={response} />}
-        {isLoading ? null : <Pagination response={response} />}
+        {isFetching || !data ? <Loader /> : <NavList response={data} />}
+        {isFetching || error || !data ? null : <Pagination response={data} />}
       </section>
       <Outlet />
     </>

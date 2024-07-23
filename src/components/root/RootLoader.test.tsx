@@ -37,7 +37,10 @@ describe("rootLoader", () => {
     const result = await rootLoader({ request } as LoaderFunctionArgs);
 
     expect(mockFetchSWPeople).toHaveBeenCalledWith("luke", "1");
-    expect(result).toEqual({ response: mockedCharactersResponse, q: "luke" });
+    expect(result).toEqual({
+      response: mockedCharactersResponse,
+      search: "luke",
+    });
 
     mockFetchSWPeople.mockRestore();
   });
@@ -56,7 +59,10 @@ describe("rootLoader", () => {
     const result = await rootLoader({ request } as LoaderFunctionArgs);
 
     expect(mockFetchSWPeople).toHaveBeenCalledWith("yoda", null);
-    expect(result).toEqual({ response: mockedCharactersResponse, q: "yoda" });
+    expect(result).toEqual({
+      response: mockedCharactersResponse,
+      search: "yoda",
+    });
 
     window.localStorage.clear();
     mockFetchSWPeople.mockRestore();

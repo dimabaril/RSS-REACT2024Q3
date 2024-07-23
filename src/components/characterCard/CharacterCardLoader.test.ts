@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { fetchSWPerson } from "../../services/api";
+import { fetchSwCharacterDetails } from "../../services/api";
 import { mockedCharacterDetailResponse } from "../../test/mocks";
 import { characterCardLoader } from "./CharacterCardLoader";
 
@@ -12,7 +12,9 @@ describe("characterCardLoader", () => {
   it("loads character data successfully", async () => {
     const mockRequest = new Request("http://example.com");
 
-    vi.mocked(fetchSWPerson).mockResolvedValue(mockedCharacterDetailResponse);
+    vi.mocked(fetchSwCharacterDetails).mockResolvedValue(
+      mockedCharacterDetailResponse,
+    );
 
     const result = await characterCardLoader({
       params: { id: "1" },
@@ -23,7 +25,7 @@ describe("characterCardLoader", () => {
       character: mockedCharacterDetailResponse,
       id: "1",
     });
-    expect(fetchSWPerson).toHaveBeenCalledWith("1");
+    expect(fetchSwCharacterDetails).toHaveBeenCalledWith("1");
   });
 
   it("throws an error if URL parameter is missing", async () => {
@@ -39,7 +41,7 @@ describe("characterCardLoader", () => {
 
   it("throws a 404 error if the character is not found", async () => {
     const mockRequest = new Request("http://example.com");
-    vi.mocked(fetchSWPerson).mockRejectedValue(
+    vi.mocked(fetchSwCharacterDetails).mockRejectedValue(
       new Response("", {
         status: 404,
         statusText: "Not Found",

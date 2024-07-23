@@ -2,17 +2,18 @@ import { createBrowserRouter } from "react-router-dom";
 
 import BlankCard from "./components/characterCard/BlankCard";
 import CharacterCard from "./components/characterCard/CharacterCard";
-import { characterCardLoader } from "./components/characterCard/CharacterCardLoader";
+// import { characterCardLoader } from "./components/characterCard/CharacterCardLoader";
 import Error from "./components/error/Error";
 import Root from "./components/root/Root";
-import { rootLoader } from "./components/root/RootLoader";
+
+// import { rootLoader } from "./components/root/RootLoader";
 
 export const routs = [
   {
     path: "/",
     element: <Root />,
     errorElement: <Error />,
-    loader: rootLoader,
+    // loader: rootLoader,
     children: [
       {
         errorElement: <Error />,
@@ -24,7 +25,7 @@ export const routs = [
           {
             path: "people/:id",
             element: <CharacterCard />,
-            loader: characterCardLoader,
+            // loader: characterCardLoader,
           },
         ],
       },

@@ -1,9 +1,6 @@
-import {
-  CharacterDetailResponse,
-  CharactersResponse,
-} from "../interfaces/interfaces";
+import { CharacterDetails, Characters } from "../interfaces/interfaces";
 
-export const mockedCharacterDetailResponse: CharacterDetailResponse = {
+export const mockedCharacterDetailResponse: CharacterDetails = {
   name: "Luke Skywalker",
   height: "172",
   mass: "77",
@@ -33,7 +30,7 @@ export const mockedCharacterDetailResponse: CharacterDetailResponse = {
   url: "https://swapi.dev/api/people/1/",
 };
 
-export const mockedCharactersResponse: CharactersResponse = {
+export const mockedCharactersResponse: Characters = {
   count: 82,
   next: "https://swapi.dev/api/people/?page=2",
   previous: null,
@@ -279,7 +276,7 @@ export const mockedCharactersResponse: CharactersResponse = {
 
 export const mockedRootLoaderResponse = {
   response: mockedCharactersResponse,
-  q: null,
+  search: null,
 };
 
 export const MockedEmptyCharactersResponse = {

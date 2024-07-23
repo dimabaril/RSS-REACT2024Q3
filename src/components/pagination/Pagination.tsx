@@ -1,10 +1,10 @@
 import { useSearchParams } from "react-router-dom";
 
-import { CharactersResponse } from "../../interfaces/interfaces";
+import { Characters } from "../../interfaces/interfaces";
 import "./Pagination.scss";
 
 interface ContentProps {
-  response: CharactersResponse;
+  response: Characters;
 }
 export default function Pagination(props: ContentProps) {
   const [, setSearchParams] = useSearchParams();

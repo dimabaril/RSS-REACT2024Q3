@@ -1,26 +1,15 @@
 import { useEffect } from "react";
-import {
-  matchPath,
-  useLoaderData,
-  useNavigate,
-  useNavigation,
-} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-import { CharacterDetailResponse } from "../../interfaces/interfaces";
+import { starWarsApi } from "../../services/api";
 import Loader from "../loader/Loader";
 import "./CharacterCard.scss";
 
 export default function CharacterCard() {
-  const { character, id } = useLoaderData() as {
-    character: CharacterDetailResponse;
-    id: string;
-  };
-  const navigation = useNavigation();
+  const { id } = useParams();
+  const { data, error, isFetching } =
+    starWarsApi.useGetCharacterDetailByIdQuery(Number(id));
   const navigate = useNavigate();
-
-  const isLoading =
-    navigation.state === "loading" &&
-    matchPath("/people/:id", navigation.location.pathname);
 
   const close = () => {
     const location = localStorage.getItem("onCloseDetailsLocation");
@@ -45,32 +34,34 @@ export default function CharacterCard() {
 
   return (
     <>
-      {isLoading ? (
+      {error ? (
+        <>Oh no, there was an error</>
+      ) : isFetching ? (
         <Loader />
-      ) : (
+      ) : data ? (
         <section className="character-card">
           <ul className="character-card__description">
-            <div className="character-card__name">{character.name}</div>
+            <div className="character-card__name">{data.name}</div>
             <li className="character-card__description-item">
-              birth year: {character.birth_year}
+              birth year: {data.birth_year}
             </li>
             <li className="character-card__description-item">
-              gender: {character.gender}
+              gender: {data.gender}
             </li>
             <li className="character-card__description-item">
-              height: {character.height} cm.
+              height: {data.height} cm.
             </li>
             <li className="character-card__description-item">
-              mass: {character.mass} kg.
+              mass: {data.mass} kg.
             </li>
             <li className="character-card__description-item">
-              skin color: {character.skin_color}
+              skin color: {data.skin_color}
             </li>
             <li className="character-card__description-item">
-              hair color: {character.hair_color}
+              hair color: {data.hair_color}
             </li>
             <li className="character-card__description-item">
-              eye color: {character.eye_color}
+              eye color: {data.eye_color}
             </li>
           </ul>
           <div className="character-card__img">
@@ -80,7 +71,7 @@ export default function CharacterCard() {
             ×
           </button>
         </section>
-      )}
+      ) : null}
     </>
   );
 }

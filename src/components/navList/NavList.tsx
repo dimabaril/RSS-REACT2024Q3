@@ -1,11 +1,11 @@
 // import { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 
-import { CharactersResponse } from "../../interfaces/interfaces";
+import { Characters } from "../../interfaces/interfaces";
 import "./NavList.scss";
 
 interface ContentProps {
-  response: CharactersResponse;
+  response: Characters;
 }
 
 export default function NavList(props: ContentProps) {

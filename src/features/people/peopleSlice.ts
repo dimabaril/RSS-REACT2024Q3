@@ -2,9 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 import type { RootState } from "../../app/store";
-import { CharactersResponse } from "../../interfaces/interfaces";
+import { Characters } from "../../interfaces/interfaces";
 
-const initialState: CharactersResponse = {
+const initialState: Characters = {
   count: 0,
   next: null,
   previous: null,
@@ -15,7 +15,7 @@ export const peopleSlice = createSlice({
   name: "people",
   initialState,
   reducers: {
-    setPeople: (state, action: PayloadAction<CharactersResponse>) => {
+    setPeople: (state, action: PayloadAction<Characters>) => {
       state.count = action.payload.count;
       state.next = action.payload.next;
       state.previous = action.payload.previous;

@@ -12,5 +12,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
     <RouterProvider router={router} fallbackElement={<div>Loading...</div>} />
   </Provider>,
-  // </React.StrictMode>,
+  // </React.StrictMode>
 );

@@ -1,4 +1,4 @@
-export interface CharacterDetailResponse {
+export interface CharacterDetails {
   birth_year: string;
   created: string;
   edited: string;
@@ -17,9 +17,9 @@ export interface CharacterDetailResponse {
   vehicles: string[];
 }
 
-export interface CharactersResponse {
+export interface Characters {
   count: number;
   next: string | null;
   previous: string | null;
-  results: CharacterDetailResponse[];
+  results: CharacterDetails[];
 }

@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { fetchSWPeople, fetchSWPerson } from "./api";
+import { fetchSwCharacterDetails, fetchSwCharacters } from "./api";
 
 global.fetch = vi.fn();
 
@@ -18,7 +18,7 @@ describe("fetchSWPeople", () => {
       json: async () => mockCharactersResponse,
     } as Response);
 
-    const response = await fetchSWPeople();
+    const response = await fetchSwCharacters();
     expect(response).toEqual(mockCharactersResponse);
     expect(fetch).toHaveBeenCalledWith(
       expect.objectContaining({ href: "https://swapi.dev/api/people/" }),
@@ -31,7 +31,7 @@ describe("fetchSWPeople", () => {
       status: 404,
     } as Response);
 
-    await expect(fetchSWPeople()).rejects.toThrow(
+    await expect(fetchSwCharacters()).rejects.toThrow(
       "Network response wasn't ok: 404",
     );
   });
@@ -48,7 +48,7 @@ describe("fetchSWPerson", () => {
       json: async () => mockCharacter,
     } as Response);
 
-    const response = await fetchSWPerson("1");
+    const response = await fetchSwCharacterDetails("1");
     expect(response).toEqual(mockCharacter);
     expect(fetch).toHaveBeenCalledWith("https://swapi.dev/api/people/1");
   });
@@ -59,7 +59,7 @@ describe("fetchSWPerson", () => {
       status: 404,
     } as Response);
 
-    await expect(fetchSWPerson("1")).rejects.toThrow(
+    await expect(fetchSwCharacterDetails("1")).rejects.toThrow(
       "Network response wasn't ok: 404",
     );
   });
