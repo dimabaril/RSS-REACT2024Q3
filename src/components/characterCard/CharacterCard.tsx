@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+import { getSWCharacterImageUrlById } from "../../helpers/getSWImageUrlById";
 import { starWarsApi } from "../../services/api";
 import Loader from "../loader/Loader";
 import "./CharacterCard.scss";
@@ -30,12 +31,12 @@ export default function CharacterCard() {
     };
   });
 
-  const img = `https://starwars-visualguide.com/assets/img/characters/${id}.jpg`;
-
   return (
     <>
       {error ? (
-        <>Oh no, there was an error</>
+        <div className="error">
+          Oh no, there was an error {JSON.stringify(error)}
+        </div>
       ) : isFetching ? (
         <Loader />
       ) : data ? (
@@ -65,7 +66,7 @@ export default function CharacterCard() {
             </li>
           </ul>
           <div className="character-card__img">
-            <img src={img} alt="img" />
+            <img src={getSWCharacterImageUrlById(Number(id))} alt="img" />
           </div>
           <button className="character-card__close" onClick={close}>
             ×

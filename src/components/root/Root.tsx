@@ -1,16 +1,8 @@
 import { useEffect } from "react";
-// import { useDispatch } from "react-redux";
-import {
-  Outlet, // matchPath,
-  // useLoaderData,
-  // useNavigation,
-  useSearchParams,
-} from "react-router-dom";
+import { Outlet, useSearchParams } from "react-router-dom";
 
 import { useAppDispatch } from "../../app/hooks";
-// import { Counter } from "../../features/counter/Counter";
 import { setPeople } from "../../features/people/peopleSlice";
-// import { Characters } from "../../interfaces/interfaces";
 import { starWarsApi } from "../../services/api";
 import ErrorButton from "../errorButton/ErrorButton";
 import Loader from "../loader/Loader";
@@ -20,31 +12,26 @@ import Search from "../search/Search";
 import "./Root.css";
 
 export default function Root() {
-  console.log("Root");
-  // const { response, search } = useLoaderData() as {
-  //   response: Characters;
-  //   search: string;
-  // };
-  // const navigation = useNavigation();
-
-  // const isLoading =
-  //   navigation.state === "loading" &&
-  //   matchPath("/", navigation.location.pathname);
-
-  // useEffect(() => {
-  //   const element = document.getElementById("search");
-  //   if (element && element instanceof HTMLInputElement && search) {
-  //     element.value = search;
-  //   }
-  // }, [search]);
-
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const dispatch = useAppDispatch();
 
   const { data, error, isFetching } = starWarsApi.useGetCharactersQuery(
     searchParams.toString(),
   );
+
+  useEffect(() => {
+    const search = searchParams.get("search") || "";
+    const savedSearch = localStorage.getItem("searchTerm") || "";
+    if (search) return;
+    if (savedSearch) {
+      setSearchParams((params) => {
+        const newParams = new URLSearchParams(params);
+        newParams.set("search", savedSearch);
+        return newParams;
+      });
+    }
+  }, [searchParams, setSearchParams]);
 
   useEffect(() => {
     if (!data) return;
@@ -54,7 +41,6 @@ export default function Root() {
   return (
     <>
       <section className="side-nav">
-        {/* <Counter /> */}
         <ErrorButton />
         <Search />
         {isFetching || !data ? <Loader /> : <NavList response={data} />}
