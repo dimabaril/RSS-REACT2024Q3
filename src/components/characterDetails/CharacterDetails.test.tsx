@@ -3,7 +3,7 @@ import { useLoaderData, useNavigate, useNavigation } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
 
 import { mockedCharacterDetailResponse } from "../../test/mocks";
-import CharacterCard from "./CharacterCard";
+import CharacterDetails from "./CharacterDetails";
 
 vi.mock("react-router-dom", () => ({
   ...vi.importActual("react-router-dom"),
@@ -27,9 +27,9 @@ vi.mocked(useNavigation).mockReturnValue({
   text: undefined,
 });
 
-describe("CharacterCard", () => {
+describe("CharacterDetails", () => {
   it("renders the character data", () => {
-    render(<CharacterCard />);
+    render(<CharacterDetails />);
     expect(
       screen.getByText(mockedCharacterDetailResponse.name),
     ).toBeInTheDocument();
@@ -64,14 +64,14 @@ describe("CharacterCard", () => {
 
   it("does not navigate when clicked inside the card", () => {
     const navigate = useNavigate();
-    render(<CharacterCard />);
+    render(<CharacterDetails />);
     fireEvent.click(screen.getByText(mockedCharacterDetailResponse.name));
     expect(navigate).not.toHaveBeenCalled();
   });
 
   it("navigates when clicked outside the card", () => {
     const navigate = useNavigate();
-    render(<CharacterCard />);
+    render(<CharacterDetails />);
     fireEvent.click(document.body);
     expect(navigate).toHaveBeenCalled();
   });

@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { describe, expect, test, vi } from "vitest";
 
-import BlankCard from "./BlankCard";
+import BlankDetails from "./BlankDetails";
 
 vi.mock("react-router-dom", async (importOriginal) => {
   const actual = await importOriginal();
@@ -12,11 +12,11 @@ vi.mock("react-router-dom", async (importOriginal) => {
   };
 });
 
-describe("BlankCard", () => {
+describe("BlankDetails", () => {
   test("renders without crashing", () => {
     render(
       <MemoryRouter>
-        <BlankCard />
+        <BlankDetails />
       </MemoryRouter>,
     );
     expect(

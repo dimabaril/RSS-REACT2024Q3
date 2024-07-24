@@ -2,6 +2,7 @@ import { NavLink, useLocation } from "react-router-dom";
 
 import { PATH } from "../../constants";
 import { Characters } from "../../interfaces/interfaces";
+import CharacterShort from "../characterShort/CharacterShort";
 import "./NavList.scss";
 
 interface ContentProps {
@@ -32,12 +33,7 @@ export default function NavList(props: ContentProps) {
                       `nav-link ${isActive ? "active" : isPending ? "pending" : ""}`
                     }
                   >
-                    <span>{character.name ? character.name : "No Name"}</span>
-                    <span>
-                      {character.gender
-                        ? ` -${character.gender}-`
-                        : " No gender"}
-                    </span>
+                    <CharacterShort character={character} />
                   </NavLink>
                 </li>
               );

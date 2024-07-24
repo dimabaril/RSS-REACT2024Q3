@@ -4,9 +4,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getSWCharacterImageUrlById } from "../../helpers/getSWImageUrlById";
 import { starWarsApi } from "../../services/api";
 import Loader from "../loader/Loader";
-import "./CharacterCard.scss";
+import "./CharacterDetails.scss";
 
-export default function CharacterCard() {
+export default function CharacterDetails() {
   const { id } = useParams();
   const { data, error, isFetching } =
     starWarsApi.useGetCharacterDetailByIdQuery(Number(id));

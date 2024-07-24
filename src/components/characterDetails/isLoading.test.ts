@@ -1,7 +1,7 @@
 import { matchPath } from "react-router-dom";
 import { describe, expect, it } from "vitest";
 
-describe("CharacterCard isLoading", () => {
+describe("CharacterDetails isLoading", () => {
   it("should be true when navigation state is 'loading' and path matches '/people/:id'", () => {
     const navigation = {
       state: "loading",
