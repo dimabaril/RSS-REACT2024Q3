@@ -2,31 +2,44 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 import type { RootState } from "../../app/store";
-import { Characters } from "../../interfaces/interfaces";
+import { CharacterDetails } from "../../interfaces/interfaces";
 
-const initialState: Characters = {
-  count: 0,
-  next: null,
-  previous: null,
-  results: [],
-};
+const initialState: CharacterDetails[] = [];
 
-export const peopleSlice = createSlice({
-  name: "people",
+export const peopleSelectedSlice = createSlice({
+  name: "peopleSelected",
   initialState,
   reducers: {
-    setPeople: (state, action: PayloadAction<Characters>) => {
-      state.count = action.payload.count;
-      state.next = action.payload.next;
-      state.previous = action.payload.previous;
-      state.results = action.payload.results;
+    setPeopleSelected: (state, action: PayloadAction<CharacterDetails>) => {
+      state.push(action.payload);
     },
+    UnsetPeopleSelected: (state, action: PayloadAction<CharacterDetails>) => {
+      const index = state.findIndex(
+        (character) => character.url === action.payload.url,
+      );
+      state.splice(index, 1);
+    },
+    togglePeopleSelected: (state, action: PayloadAction<CharacterDetails>) => {
+      const index = state.findIndex(
+        (character) => character.url === action.payload.url,
+      );
+      if (index === -1) {
+        state.push(action.payload);
+      } else {
+        state.splice(index, 1);
+      }
+    },
+    UnsetAllPeopleSelected: () => initialState,
   },
 });
 
-export const { setPeople } = peopleSlice.actions;
+export const {
+  setPeopleSelected,
+  UnsetPeopleSelected,
+  togglePeopleSelected,
+  UnsetAllPeopleSelected,
+} = peopleSelectedSlice.actions;
 
-// Other code such as selectors can use the imported `RootState` type
-export const selectPeople = (state: RootState) => state.people;
+export const selectPeopleSelected = (state: RootState) => state.peopleSelected;
 
-export default peopleSlice.reducer;
+export default peopleSelectedSlice.reducer;

@@ -1,12 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 
-// import peopleReducer from "../features/people/peopleSlice";
+import peopleSelectedReducer from "../features/people/peopleSlice";
 import { starWarsApi } from "../services/api";
 
 export const store = configureStore({
   reducer: {
-    // people: peopleReducer,
+    peopleSelected: peopleSelectedReducer,
     [starWarsApi.reducerPath]: starWarsApi.reducer,
   },
 

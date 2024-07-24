@@ -13,6 +13,7 @@ export default function NavList(props: ContentProps) {
   const { response } = props;
   const location = useLocation();
 
+  // Save location to return the same page after closing details
   if (location.pathname === PATH.ROOT)
     localStorage.setItem("onCloseDetailsLocation", JSON.stringify(location));
 
