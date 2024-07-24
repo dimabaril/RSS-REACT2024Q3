@@ -5,6 +5,7 @@ import { Outlet, useSearchParams } from "react-router-dom";
 // import { setPeople } from "../../features/people/peopleSlice";
 import { starWarsApi } from "../../services/api";
 import ErrorButton from "../errorButton/ErrorButton";
+import FlyoutSelected from "../flyout/FlyoutSelected";
 import Loader from "../loader/Loader";
 import NavList from "../navList/NavList";
 import Pagination from "../pagination/Pagination";
@@ -46,6 +47,7 @@ export default function Root() {
         {isFetching || error || !data ? null : <Pagination response={data} />}
       </section>
       <Outlet />
+      <FlyoutSelected />
     </>
   );
 }

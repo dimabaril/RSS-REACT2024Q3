@@ -15,7 +15,6 @@ export default function CharacterShort(props: { character: CharacterDetails }) {
 
   const toggleSelected = (event: React.MouseEvent) => {
     event.preventDefault();
-    console.log("checked", character.name);
     dispatch(togglePeopleSelected(character));
   };
 
@@ -30,9 +29,9 @@ export default function CharacterShort(props: { character: CharacterDetails }) {
       <li>
         <i>birth year: {character.birth_year}</i>
       </li>
-      <li>
+      {/* <li>
         <i>gender: {character.gender}</i>
-      </li>
+      </li> */}
     </ul>
   );
 }
