@@ -1,9 +1,9 @@
-// import "./FlyoutSelected.css";
 import { useAppSelector } from "../../app/hooks";
 import { useAppDispatch } from "../../app/hooks";
 import { UnsetAllPeopleSelected } from "../../features/people/peopleSlice";
 import { concertObjectToCsv } from "../../helpers/convertObjectToCsv";
 import { createBlobURL } from "../../helpers/createBlobURL";
+import "./FlyoutSelected.scss";
 
 export default function FlyoutSelected() {
   const peopleSelected = useAppSelector((state) => state.peopleSelected);
@@ -18,19 +18,17 @@ export default function FlyoutSelected() {
   };
 
   return (
-    isOpen && (
-      <div className="flyout">
-        <p>
-          {count} {count > 1 ? "items are" : "item is"} selected
-        </p>
-        <button onClick={unselectAll}>Unselect all</button>
-        <a
-          href={createBlobURL(concertObjectToCsv(peopleSelected), "text/csv")}
-          download={`${count}_selected_characters.csv`}
-        >
-          Download selected as CSV
-        </a>
-      </div>
-    )
+    <div className={`flyout ${isOpen ? "open" : ""}`}>
+      <span>
+        {count} {count > 1 ? "characters are" : "character is"} selected
+      </span>
+      <button onClick={unselectAll}>Unselect all</button>
+      <a
+        href={createBlobURL(concertObjectToCsv(peopleSelected), "text/csv")}
+        download={`${count}_selected_characters.csv`}
+      >
+        Download selected as CSV
+      </a>
+    </div>
   );
 }

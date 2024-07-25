@@ -8,7 +8,7 @@ export default function CharacterShort(props: { character: CharacterDetails }) {
   const dispatch = useAppDispatch();
 
   const isSelected = useAppSelector((state) =>
-    state.peopleSelected.find(
+    state.peopleSelected.some(
       (selectedCharacter) => selectedCharacter.url === character.url,
     ),
   );
@@ -19,19 +19,14 @@ export default function CharacterShort(props: { character: CharacterDetails }) {
   };
 
   return (
-    <ul className="character-short-card">
-      <button onClick={toggleSelected}>
-        {isSelected ? "Selected" : "Not Selected"}
-      </button>
-      <li>
-        <strong>{character.name}</strong>
-      </li>
-      <li>
-        <i>birth year: {character.birth_year}</i>
-      </li>
-      {/* <li>
-        <i>gender: {character.gender}</i>
-      </li> */}
-    </ul>
+    <div className="character-short-card">
+      <div className="custom-checkbox" onClick={toggleSelected}>
+        {isSelected && "✓"}
+      </div>
+      <strong className="character-short-card__item">{character.name}</strong>
+      <i className="character-short-card__item">
+        birth year: {character.birth_year}
+      </i>
+    </div>
   );
 }
