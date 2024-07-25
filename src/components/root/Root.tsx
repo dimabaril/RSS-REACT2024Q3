@@ -1,8 +1,6 @@
 import { useEffect } from "react";
 import { Outlet, useSearchParams } from "react-router-dom";
 
-// import { useAppDispatch } from "../../app/hooks";
-// import { setPeople } from "../../features/people/peopleSlice";
 import { starWarsApi } from "../../services/api";
 import ErrorButton from "../errorButton/ErrorButton";
 import FlyoutSelected from "../flyout/FlyoutSelected";
@@ -10,11 +8,11 @@ import Loader from "../loader/Loader";
 import NavList from "../navList/NavList";
 import Pagination from "../pagination/Pagination";
 import Search from "../search/Search";
+import ThemeSelector from "../themeSelector/ThemeSelector";
 import "./Root.css";
 
 export default function Root() {
   const [searchParams, setSearchParams] = useSearchParams();
-  // const dispatch = useAppDispatch();
   const { data, error, isFetching } = starWarsApi.useGetCharactersQuery(
     searchParams.toString(),
   );
@@ -33,14 +31,10 @@ export default function Root() {
     }
   }, [searchParams, setSearchParams]);
 
-  // useEffect(() => {
-  //   if (!data) return;
-  //   dispatch(setPeople(data));
-  // }, [dispatch, data]);
-
   return (
     <>
       <section className="side-nav">
+        <ThemeSelector />
         <ErrorButton />
         <Search />
         {isFetching || !data ? <Loader /> : <NavList response={data} />}
