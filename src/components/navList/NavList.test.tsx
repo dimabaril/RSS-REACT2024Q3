@@ -17,12 +17,6 @@ import {
 } from "../../test/mock/mocks";
 import NavList from "./NavList";
 
-// <ThemeProvider>
-//   <Provider store={store}>
-//     <RouterProvider router={router} fallbackElement={<div>Loading...</div>} />
-//   </Provider>
-// </ThemeProvider>
-
 describe("Card List component", () => {
   test("the component renders the specified number of cards", async () => {
     render(

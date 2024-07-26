@@ -37,7 +37,7 @@ export const handlers = [
     // for "https://swapi.dev/api/people?search=unknown"
     return HttpResponse.json(MockedEmptyCharactersResponse, { status: 200 });
   }),
-  //   http.get("*", () => {
-  //     return HttpResponse.json({ detail: "Not found" });
-  //   }),
+  http.get("*", () => {
+    return HttpResponse.json({ detail: "Not found" }, { status: 404 });
+  }),
 ];

@@ -274,11 +274,6 @@ export const mockedCharactersResponse: Characters = {
   ],
 };
 
-// export const mockedRootLoaderResponse = {
-//   response: mockedCharactersResponse,
-//   search: null,
-// };
-
 export const MockedEmptyCharactersResponse = {
   count: 0,
   next: null,

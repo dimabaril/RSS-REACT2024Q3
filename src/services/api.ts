@@ -18,6 +18,3 @@ export const starWarsApi = createApi({
     }),
   }),
 });
-
-// export const { useGetCharacterDetailByIdQuery, useGetCharactersQuery } =
-//   starWarsApi;
