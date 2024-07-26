@@ -20,10 +20,12 @@ export default function NavList(props: ContentProps) {
   return (
     <>
       {response.results.length === 0 ? (
-        <div className="nav-list">No results found</div>
+        <div className="nav-list" data-testid="nav-list">
+          No results found
+        </div>
       ) : (
         <>
-          <ul className="nav-list">
+          <ul className="nav-list" data-testid="nav-list">
             {response.results.map((character) => {
               const Id = character.url.split("/").filter(Boolean).pop();
               return (

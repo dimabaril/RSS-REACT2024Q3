@@ -1,24 +1,46 @@
 import "@testing-library/jest-dom";
-import { render, screen } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
+import { render, screen, waitFor, within } from "@testing-library/react";
+import { Provider } from "react-redux";
+import {
+  MemoryRouter,
+  RouterProvider,
+  createMemoryRouter,
+} from "react-router-dom";
 import { describe, expect, test } from "vitest";
 
+import { store } from "../../app/store";
+import { ThemeProvider } from "../../contexts/ThemeContext";
+import { router, routs } from "../../router";
 import {
   MockedEmptyCharactersResponse,
   mockedCharactersResponse,
-} from "../../test/mocks";
+} from "../../test/mock/mocks";
 import NavList from "./NavList";
-import "./NavList.scss";
+
+// <ThemeProvider>
+//   <Provider store={store}>
+//     <RouterProvider router={router} fallbackElement={<div>Loading...</div>} />
+//   </Provider>
+// </ThemeProvider>
 
 describe("Card List component", () => {
-  test("the component renders the specified number of cards", () => {
+  test("the component renders the specified number of cards", async () => {
     render(
-      <MemoryRouter>
-        <NavList response={mockedCharactersResponse} />
-      </MemoryRouter>,
+      <ThemeProvider>
+        <Provider store={store}>
+          <RouterProvider
+            router={router}
+            fallbackElement={<div>Loading...</div>}
+          />
+        </Provider>
+      </ThemeProvider>,
     );
-    const items = screen.getAllByRole("listitem");
-    expect(items).toHaveLength(mockedCharactersResponse.results.length);
+
+    await waitFor(() => {
+      const characterDetailsContainer = screen.getByTestId("nav-list");
+      const items = within(characterDetailsContainer).getAllByRole("listitem");
+      expect(items).toHaveLength(mockedCharactersResponse.results.length);
+    });
   });
 
   test("an appropriate message is displayed if no cards are present", () => {
@@ -33,16 +55,38 @@ describe("Card List component", () => {
 });
 
 describe("Card component", () => {
-  test("the card component renders the relevant card data", () => {
+  test("the card component renders the relevant card data", async () => {
+    const router = createMemoryRouter(routs, {
+      initialEntries: ["/"],
+      initialIndex: 0,
+    });
     render(
-      <MemoryRouter>
-        <NavList response={mockedCharactersResponse} />
-      </MemoryRouter>,
+      <ThemeProvider>
+        <Provider store={store}>
+          <RouterProvider
+            router={router}
+            fallbackElement={<div>Loading...</div>}
+          />
+        </Provider>
+      </ThemeProvider>,
     );
 
-    expect(screen.getByText("Luke Skywalker")).toBeInTheDocument();
-    expect(screen.getByText("C-3PO")).toBeInTheDocument();
-    expect(screen.getByText("R2-D2")).toBeInTheDocument();
-    expect(screen.getByText("Darth Vader")).toBeInTheDocument();
+    await waitFor(() => {
+      const navList = screen.getByTestId("nav-list");
+      expect(within(navList).getByText("Luke Skywalker")).toBeInTheDocument();
+      expect(within(navList).getByText("C-3PO")).toBeInTheDocument();
+      expect(within(navList).getByText("R2-D2")).toBeInTheDocument();
+      expect(within(navList).getByText("Darth Vader")).toBeInTheDocument();
+      expect(within(navList).getByText("Leia Organa")).toBeInTheDocument();
+      expect(within(navList).getByText("Owen Lars")).toBeInTheDocument();
+      expect(
+        within(navList).getByText("Beru Whitesun lars"),
+      ).toBeInTheDocument();
+      expect(within(navList).getByText("R5-D4")).toBeInTheDocument();
+      expect(
+        within(navList).getByText("Biggs Darklighter"),
+      ).toBeInTheDocument();
+      expect(within(navList).getByText("Obi-Wan Kenobi")).toBeInTheDocument();
+    });
   });
 });
