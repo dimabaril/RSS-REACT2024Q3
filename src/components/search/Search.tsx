@@ -1,56 +1,44 @@
-import { Component } from "react";
+import { Form, useSubmit } from "react-router-dom";
 
+import { useStateLocalStorage } from "../../hooks/useStateLocalStorage";
 import "./Search.scss";
 
-interface SearchProps {
-  className?: string;
-  onSearch: (searchText: string) => void;
-}
+export default function Search() {
+  const [searchText, setSearchText, setLocalStorageSearchText] =
+    useStateLocalStorage("searchText", "");
+  const submit = useSubmit();
 
-interface SearchState {
-  searchText: string;
-}
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(event.target.value);
+  };
 
-export default class Search extends Component<SearchProps, SearchState> {
-  constructor(props: SearchProps) {
-    super(props);
-    const savedSearchInput = localStorage.getItem("searchText") || "";
-    this.state = {
-      searchText: savedSearchInput,
-    };
-    this.props.onSearch(this.state.searchText);
+  function handleSearch(
+    event:
+      | React.MouseEvent<HTMLButtonElement>
+      | React.KeyboardEvent<HTMLInputElement>,
+  ) {
+    event.preventDefault();
+    const trimmedSearchText = searchText.trim();
+    setLocalStorageSearchText(trimmedSearchText);
+    submit(event.currentTarget.form);
   }
 
-  handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ searchText: event.target.value });
-  };
-
-  handleSearch = () => {
-    const trimmedSearchText = this.state.searchText.trim();
-    localStorage.setItem("searchText", trimmedSearchText);
-    this.props.onSearch(trimmedSearchText);
-  };
-
-  render = () => {
-    const baseClass = this.props.className || "search";
-    return (
-      <section className={baseClass}>
+  return (
+    <div className="search">
+      <Form className="search__form">
         <input
-          className={`${baseClass}__input`}
+          id="q"
+          className="search__input"
           type="text"
           placeholder="Search..."
-          value={this.state.searchText}
-          onChange={this.handleInputChange}
-          onKeyUp={(event) => {
-            if (event.key === "Enter") {
-              this.handleSearch();
-            }
-          }}
+          value={searchText}
+          onChange={handleInputChange}
+          name="q"
         />
-        <button className={`${baseClass}__button`} onClick={this.handleSearch}>
+        <button className="search__button" onClick={handleSearch}>
           Search
         </button>
-      </section>
-    );
-  };
+      </Form>
+    </div>
+  );
 }

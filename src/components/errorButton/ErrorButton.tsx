@@ -1,38 +1,24 @@
-import { Component } from "react";
+import { useState } from "react";
 
 import "./ErrorButton.scss";
-
-interface ErrorButtonState {
-  error: boolean;
-}
 
 interface ErrorButtonProps {
   errorMessage?: string;
 }
 
-export default class ErrorButton extends Component<
-  ErrorButtonProps,
-  ErrorButtonState
-> {
-  state: ErrorButtonState = {
-    error: false,
-  };
+export default function ErrorButton(props: ErrorButtonProps) {
+  const [error, setError] = useState(false);
 
-  render() {
-    const defaultErrorMessage = "Error was thrown by ErrorButton";
-    const errorMessage = this.props.errorMessage || defaultErrorMessage;
+  const defaultErrorMessage = "Error was thrown by ErrorButton";
+  const errorMessage = props.errorMessage || defaultErrorMessage;
 
-    if (this.state.error) {
-      throw new Error(errorMessage);
-    }
-
-    return (
-      <button
-        className="error-button"
-        onClick={() => this.setState({ error: true })}
-      >
-        Throw Error Button
-      </button>
-    );
+  if (error) {
+    throw new Error(errorMessage);
   }
+
+  return (
+    <button className="error-button" onClick={() => setError(true)}>
+      Throw Error Button
+    </button>
+  );
 }

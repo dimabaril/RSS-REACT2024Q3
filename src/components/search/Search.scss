@@ -1,5 +1,14 @@
 .search {
+}
+
+.search__form {
   display: flex;
   justify-content: center;
   gap: 1rem;
+}
+
+.search__input {
+  display: flex;
+}
+.search__button {
 }
