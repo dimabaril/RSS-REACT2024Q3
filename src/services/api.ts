@@ -1,39 +1,20 @@
-import {
-  CharacterDetailResponse,
-  CharactersResponse,
-} from "../interfaces/interfaces";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-export const fetchSWPeople = async (
-  term: string | null = null,
-  page: string | null = null,
-): Promise<CharactersResponse> => {
-  const endpoint = "https://swapi.dev/api/people/";
+import { API_URL } from "../constants";
+import { CharacterDetails, Characters } from "../interfaces/interfaces";
 
-  const currentUrl = new URL(endpoint);
-  if (term) {
-    currentUrl.searchParams.set("search", term);
-  }
-  if (page) {
-    currentUrl.searchParams.set("page", page);
-  }
-
-  const response = await fetch(currentUrl);
-  if (!response.ok) {
-    throw new Error(`Network response wasn't ok: ${response.status}`);
-  }
-  const data = await response.json();
-  return data;
-};
-
-export const fetchSWPerson = async (
-  id: string,
-): Promise<CharacterDetailResponse> => {
-  const endpoint = "https://swapi.dev/api/people/";
-
-  const response = await fetch(endpoint + id);
-  if (!response.ok) {
-    throw new Error(`Network response wasn't ok: ${response.status}`);
-  }
-  const data = await response.json();
-  return data;
-};
+export const starWarsApi = createApi({
+  reducerPath: "starWarsApi",
+  baseQuery: fetchBaseQuery({ baseUrl: API_URL.BASE_URL }),
+  endpoints: (builder) => ({
+    getCharacterDetailById: builder.query<CharacterDetails, number | string>({
+      query: (id) => `people/${id}`,
+    }),
+    getCharacters: builder.query<Characters, string | null>({
+      query: (searchParams) => {
+        if (!searchParams) return API_URL.PEOPLE;
+        return `${API_URL.PEOPLE}?${searchParams}`;
+      },
+    }),
+  }),
+});

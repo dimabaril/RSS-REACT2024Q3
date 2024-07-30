@@ -1,67 +1,23 @@
-import { render, screen, waitFor } from "@testing-library/react";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { describe, expect, test, vi } from "vitest";
+import { render, screen, waitFor, within } from "@testing-library/react";
+import { Provider } from "react-redux";
+import { RouterProvider } from "react-router-dom";
+import { describe, expect, test } from "vitest";
 
-import CharacterCard from "./components/characterCard/CharacterCard.tsx";
-import { characterCardLoader } from "./components/characterCard/CharacterCardLoader.ts";
-import Error from "./components/error/Error.tsx";
-import Root from "./components/root/Root.tsx";
-import { rootLoader } from "./components/root/RootLoader.tsx";
-import "./index.css";
-import {
-  mockedCharacterDetailResponse,
-  mockedRootLoaderResponse,
-} from "./test/mocks.ts";
-
-vi.mock("./components/root/RootLoader.tsx", () => ({
-  rootLoader: () => {
-    return mockedRootLoaderResponse;
-  },
-}));
-
-const mockedCharacterCardLoaderResponse = {
-  character: mockedCharacterDetailResponse,
-  id: "1",
-};
-
-vi.mock("./components/characterCard/CharacterCardLoader.ts", () => ({
-  characterCardLoader: () => {
-    return mockedCharacterCardLoaderResponse;
-  },
-}));
+import { store } from "./app/store.ts";
+import { ThemeProvider } from "./contexts/ThemeContext.tsx";
+import { router } from "./router.tsx";
 
 describe("main", () => {
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <Root />,
-      errorElement: <Error />,
-      loader: rootLoader,
-      children: [
-        {
-          errorElement: <Error />,
-          children: [
-            {
-              index: true,
-              element: <div>Select some persona, for details</div>,
-            },
-            {
-              path: "people/:id",
-              element: <CharacterCard />,
-              loader: characterCardLoader,
-            },
-          ],
-        },
-      ],
-    },
-  ]);
-
   test("bid to select a character to display detailed information", async () => {
     render(
-      <RouterProvider
-        router={router}
-        fallbackElement={<div>Loading...</div>}
-      />,
+      <ThemeProvider>
+        <Provider store={store}>
+          <RouterProvider
+            router={router}
+            fallbackElement={<div>Loading...</div>}
+          />
+        </Provider>
+      </ThemeProvider>,
     );
 
     await waitFor(() => {
@@ -73,23 +29,44 @@ describe("main", () => {
 
   test("click on a character to display detailed information", async () => {
     render(
-      <RouterProvider
-        router={router}
-        fallbackElement={<div>Loading...</div>}
-      />,
+      <ThemeProvider>
+        <Provider store={store}>
+          <RouterProvider
+            router={router}
+            fallbackElement={<div>Loading...</div>}
+          />
+        </Provider>
+      </ThemeProvider>,
     );
 
-    const lukeSkywalker = screen.getByText("Luke Skywalker");
-    lukeSkywalker.click();
+    await waitFor(() => {
+      const lukeSkywalker = screen.getByText("Luke Skywalker");
+      lukeSkywalker.click();
+    });
 
     await waitFor(() => {
-      expect(screen.getByText("birth year: 19BBY")).toBeInTheDocument();
-      expect(screen.getByText("gender: male")).toBeInTheDocument();
-      expect(screen.getByText("height: 172 cm.")).toBeInTheDocument();
-      expect(screen.getByText("mass: 77 kg.")).toBeInTheDocument();
-      expect(screen.getByText("skin color: fair")).toBeInTheDocument();
-      expect(screen.getByText("hair color: blond")).toBeInTheDocument();
-      expect(screen.getByText("eye color: blue")).toBeInTheDocument();
+      const detailsContainer = screen.getByTestId("character-details");
+      expect(
+        within(detailsContainer).getByText("birth year: 19BBY"),
+      ).toBeInTheDocument();
+      expect(
+        within(detailsContainer).getByText("gender: male"),
+      ).toBeInTheDocument();
+      expect(
+        within(detailsContainer).getByText("height: 172 cm."),
+      ).toBeInTheDocument();
+      expect(
+        within(detailsContainer).getByText("mass: 77 kg."),
+      ).toBeInTheDocument();
+      expect(
+        within(detailsContainer).getByText("skin color: fair"),
+      ).toBeInTheDocument();
+      expect(
+        within(detailsContainer).getByText("hair color: blond"),
+      ).toBeInTheDocument();
+      expect(
+        within(detailsContainer).getByText("eye color: blue"),
+      ).toBeInTheDocument();
     });
   });
 });

@@ -1,46 +1,47 @@
 import { useEffect } from "react";
-import {
-  Outlet,
-  matchPath,
-  useLoaderData,
-  useNavigation,
-} from "react-router-dom";
+import { Outlet, useSearchParams } from "react-router-dom";
 
-import { CharactersResponse } from "../../interfaces/interfaces";
+import { starWarsApi } from "../../services/api";
 import ErrorButton from "../errorButton/ErrorButton";
+import FlyoutSelected from "../flyout/FlyoutSelected";
 import Loader from "../loader/Loader";
 import NavList from "../navList/NavList";
 import Pagination from "../pagination/Pagination";
 import Search from "../search/Search";
+import ThemeSelector from "../themeSelector/ThemeSelector";
 import "./Root.css";
 
 export default function Root() {
-  const { response, q } = useLoaderData() as {
-    response: CharactersResponse;
-    q: string;
-  };
-  const navigation = useNavigation();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { data, error, isFetching } = starWarsApi.useGetCharactersQuery(
+    searchParams.toString(),
+  );
 
-  const isLoading =
-    navigation.state === "loading" &&
-    matchPath("/", navigation.location.pathname);
-
+  // Set search term from local storage if it exists
   useEffect(() => {
-    const element = document.getElementById("q");
-    if (element && element instanceof HTMLInputElement && q) {
-      element.value = q;
+    const search = searchParams.get("search") || "";
+    const savedSearch = localStorage.getItem("searchTerm") || "";
+    if (search) return;
+    if (savedSearch) {
+      setSearchParams((params) => {
+        const newParams = new URLSearchParams(params);
+        newParams.set("search", savedSearch);
+        return newParams;
+      });
     }
-  }, [q]);
+  }, [searchParams, setSearchParams]);
 
   return (
     <>
       <section className="side-nav">
+        <ThemeSelector />
         <ErrorButton />
         <Search />
-        {isLoading ? <Loader /> : <NavList response={response} />}
-        {isLoading ? null : <Pagination response={response} />}
+        {isFetching || !data ? <Loader /> : <NavList response={data} />}
+        {isFetching || error || !data ? null : <Pagination response={data} />}
       </section>
       <Outlet />
+      <FlyoutSelected />
     </>
   );
 }

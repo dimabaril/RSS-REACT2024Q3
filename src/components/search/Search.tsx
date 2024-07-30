@@ -4,12 +4,12 @@ import { useStateLocalStorage } from "../../hooks/useStateLocalStorage";
 import "./Search.scss";
 
 export default function Search() {
-  const [searchText, setSearchText, setLocalStorageSearchText] =
-    useStateLocalStorage("searchText", "");
+  const [searchTerm, setSearchTerm, setLocalStorageSearchTerm] =
+    useStateLocalStorage("searchTerm", "");
   const submit = useSubmit();
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchText(event.target.value);
+    setSearchTerm(event.target.value);
   };
 
   function handleSearch(
@@ -18,8 +18,8 @@ export default function Search() {
       | React.KeyboardEvent<HTMLInputElement>,
   ) {
     event.preventDefault();
-    const trimmedSearchText = searchText.trim();
-    setLocalStorageSearchText(trimmedSearchText);
+    const trimmedSearchTerm = searchTerm.trim();
+    setLocalStorageSearchTerm(trimmedSearchTerm);
     submit(event.currentTarget.form);
   }
 
@@ -27,13 +27,13 @@ export default function Search() {
     <div className="search">
       <Form className="search__form">
         <input
-          id="q"
+          id="search"
           className="search__input"
           type="text"
           placeholder="Search..."
-          value={searchText}
+          value={searchTerm}
           onChange={handleInputChange}
-          name="q"
+          name="search"
         />
         <button className="search__button" onClick={handleSearch}>
           Search

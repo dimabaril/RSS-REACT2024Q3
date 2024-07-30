@@ -1,30 +1,27 @@
 import { createBrowserRouter } from "react-router-dom";
 
-import BlankCard from "./components/characterCard/BlankCard";
-import CharacterCard from "./components/characterCard/CharacterCard";
-import { characterCardLoader } from "./components/characterCard/CharacterCardLoader";
+import BlankDetails from "./components/characterDetails/BlankDetails";
+import CharacterDetails from "./components/characterDetails/CharacterDetails";
 import Error from "./components/error/Error";
 import Root from "./components/root/Root";
-import { rootLoader } from "./components/root/RootLoader";
+import { PATH } from "./constants";
 
 export const routs = [
   {
-    path: "/",
+    path: PATH.ROOT,
     element: <Root />,
     errorElement: <Error />,
-    loader: rootLoader,
     children: [
       {
         errorElement: <Error />,
         children: [
           {
             index: true,
-            element: <BlankCard />,
+            element: <BlankDetails />,
           },
           {
-            path: "people/:id",
-            element: <CharacterCard />,
-            loader: characterCardLoader,
+            path: PATH.PEOPLE_ID,
+            element: <CharacterDetails />,
           },
         ],
       },

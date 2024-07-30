@@ -1,0 +1,20 @@
+.character-short-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #cccccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 0.3rem 1rem;
+}
+
+.custom-checkbox {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  font-size: 1.5rem;
+  line-height: 1.2rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 2px solid;
+  text-align: center;
+}

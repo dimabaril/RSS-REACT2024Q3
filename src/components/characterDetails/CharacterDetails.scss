@@ -28,7 +28,10 @@
 
 .character-card__close {
   position: absolute;
-  top: 0;
-  right: 0;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  top: 0.5rem;
+  right: 0.5rem;
   border-radius: 0;
 }

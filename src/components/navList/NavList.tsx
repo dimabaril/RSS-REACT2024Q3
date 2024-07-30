@@ -1,43 +1,42 @@
-import { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 
-import { CharactersResponse } from "../../interfaces/interfaces";
+import { PATH } from "../../constants";
+import { Characters } from "../../interfaces/interfaces";
+import CharacterShort from "../characterShort/CharacterShort";
 import "./NavList.scss";
 
 interface ContentProps {
-  response: CharactersResponse;
+  response: Characters;
 }
 
 export default function NavList(props: ContentProps) {
-  const [response] = useState<CharactersResponse>(props.response);
+  const { response } = props;
   const location = useLocation();
 
-  if (location.pathname === "/")
-    localStorage.setItem("location", JSON.stringify(location));
+  // Save location to return the same page after closing details
+  if (location.pathname === PATH.ROOT)
+    localStorage.setItem("onCloseDetailsLocation", JSON.stringify(location));
 
   return (
     <>
       {response.results.length === 0 ? (
-        <div className="nav-list">No results found</div>
+        <div className="nav-list" data-testid="nav-list">
+          No results found
+        </div>
       ) : (
         <>
-          <ul className="nav-list">
+          <ul className="nav-list" data-testid="nav-list">
             {response.results.map((character) => {
               const Id = character.url.split("/").filter(Boolean).pop();
               return (
                 <li key={character.url.toString()} className="nav-list__item">
                   <NavLink
-                    to={`/people/${Id}`}
+                    to={`${PATH.PEOPLE}${Id}${location.search}`}
                     className={({ isActive, isPending }) =>
                       `nav-link ${isActive ? "active" : isPending ? "pending" : ""}`
                     }
                   >
-                    <span>{character.name ? character.name : "No Name"}</span>
-                    <span>
-                      {character.gender
-                        ? ` -${character.gender}-`
-                        : " No gender"}
-                    </span>
+                    <CharacterShort character={character} />
                   </NavLink>
                 </li>
               );
