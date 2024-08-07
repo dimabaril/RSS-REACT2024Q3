@@ -89,7 +89,8 @@ input {
   transition: border-color 0.25s;
 }
 
-#root {
+// #root {
+#__next {
   display: flex;
   flex-grow: 1;
   align-items: flex-start;

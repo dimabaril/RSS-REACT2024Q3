@@ -1,8 +1,8 @@
 import { useAppSelector } from "../../app/hooks";
 import { useAppDispatch } from "../../app/hooks";
 import { UnsetAllPeopleSelected } from "../../features/people/peopleSlice";
-import { concertObjectToCsv } from "../../helpers/convertObjectToCsv";
-import { createBlobURL } from "../../helpers/createBlobURL";
+// import { concertObjectToCsv } from "../../helpers/convertObjectToCsv";
+// import { createBlobURL } from "../../helpers/createBlobURL";
 import "./FlyoutSelected.scss";
 
 export default function FlyoutSelected() {
@@ -23,12 +23,12 @@ export default function FlyoutSelected() {
         {count} {count > 1 ? "characters are" : "character is"} selected
       </span>
       <button onClick={unselectAll}>Unselect all</button>
-      <a
+      {/* <a
         href={createBlobURL(concertObjectToCsv(peopleSelected), "text/csv")}
         download={`${count}_selected_characters.csv`}
       >
         Download selected as CSV
-      </a>
+      </a> */}
     </div>
   );
 }

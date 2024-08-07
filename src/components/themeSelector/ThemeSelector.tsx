@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import { useTheme } from "../../hooks/useTheme";
 import "./ThemeSelector.scss";
 import moon from "/src/assets/moon-svgrepo-com.svg";
@@ -8,7 +10,7 @@ const ThemeSelector = () => {
 
   return (
     <div className={"theme-button"} onClick={toggleTheme}>
-      {isDark ? <img src={sun} alt="sun" /> : <img src={moon} alt="moon" />}
+      {isDark ? <Image src={moon} alt="moon" /> : <Image src={sun} alt="sun" />}
     </div>
   );
 };
