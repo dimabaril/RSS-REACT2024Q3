@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 
-// import { wrapper } from "../app/store";
+import { wrapper } from "../app/store";
 import ErrorButton from "../components/errorButton/ErrorButton";
 import FlyoutSelected from "../components/flyout/FlyoutSelected";
 import Loader from "../components/loader/Loader";
@@ -12,25 +12,26 @@ import ThemeSelector from "../components/themeSelector/ThemeSelector";
 import { usePageLoading } from "../hooks/usePageLoading";
 import { starWarsApi } from "../services/api";
 
-// export const getServerSideProps = wrapper.getServerSideProps(
-//   (store) => async (context) => {
-//     const { query } = context;
-//     const searchParams = new URLSearchParams(query as Record<string, string>);
-//     searchParams.delete("id");
+// eslint-disable-next-line react-refresh/only-export-components
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) => async (context) => {
+    const { query } = context;
+    const searchParams = new URLSearchParams(query as Record<string, string>);
+    searchParams.delete("id");
 
-//     store.dispatch(
-//       starWarsApi.endpoints.getCharacters.initiate(searchParams.toString()),
-//     );
+    store.dispatch(
+      starWarsApi.endpoints.getCharacters.initiate(searchParams.toString()),
+    );
 
-//     await Promise.all(
-//       store.dispatch(starWarsApi.util.getRunningQueriesThunk()),
-//     );
+    await Promise.all(
+      store.dispatch(starWarsApi.util.getRunningQueriesThunk()),
+    );
 
-//     return {
-//       props: {},
-//     };
-//   },
-// );
+    return {
+      props: {},
+    };
+  },
+);
 
 export default function Root() {
   const router = useRouter();

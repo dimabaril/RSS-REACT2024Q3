@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-// import { wrapper } from "../../app/store";
+import { wrapper } from "../../app/store";
 import "../../components/characterDetails/CharacterDetails.scss";
 import Loader from "../../components/loader/Loader";
 import { getSWCharacterImageUrlById } from "../../helpers/getSWImageUrlById";
@@ -9,23 +9,24 @@ import { usePageLoading } from "../../hooks/usePageLoading";
 import { starWarsApi } from "../../services/api";
 import Root from "../index";
 
-// export const getServerSideProps = wrapper.getServerSideProps(
-//   (store) => async (context) => {
-//     const { id } = context.query;
+// eslint-disable-next-line react-refresh/only-export-components
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) => async (context) => {
+    const { id } = context.query;
 
-//     store.dispatch(
-//       starWarsApi.endpoints.getCharacterDetailById.initiate(Number(id)),
-//     );
+    store.dispatch(
+      starWarsApi.endpoints.getCharacterDetailById.initiate(Number(id)),
+    );
 
-//     await Promise.all(
-//       store.dispatch(starWarsApi.util.getRunningQueriesThunk()),
-//     );
+    await Promise.all(
+      store.dispatch(starWarsApi.util.getRunningQueriesThunk()),
+    );
 
-//     return {
-//       props: {},
-//     };
-//   },
-// );
+    return {
+      props: {},
+    };
+  },
+);
 
 export default function CharacterDetails() {
   const router = useRouter();
