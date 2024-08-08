@@ -1,51 +1,25 @@
-import { render, screen, waitFor, within } from "@testing-library/react";
-import { Provider } from "react-redux";
-import { RouterProvider } from "react-router-dom";
-import { describe, expect, test } from "vitest";
+import { fireEvent, screen, waitFor, within } from "@testing-library/react";
+import mockRouter from "next-router-mock";
+import { describe, expect, it } from "vitest";
 
-import { store } from "./app/store.ts";
-import { ThemeProvider } from "./contexts/ThemeContext.tsx";
-import { router } from "./router.tsx";
+import CharacterDetails from "./pages/people/[id]";
+import { renderWithProviders } from "./test/wrappedRender/wrappedRender";
 
 describe("main", () => {
-  test("bid to select a character to display detailed information", async () => {
-    render(
-      <ThemeProvider>
-        <Provider store={store}>
-          <RouterProvider
-            router={router}
-            fallbackElement={<div>Loading...</div>}
-          />
-        </Provider>
-      </ThemeProvider>,
-    );
+  it("click on a character to switch detailed information", async () => {
+    mockRouter.push("/people/2");
+    renderWithProviders(<CharacterDetails />);
 
     await waitFor(() => {
-      expect(
-        screen.getByText("Select some persona, for details"),
-      ).toBeInTheDocument();
-    });
-  });
-
-  test("click on a character to display detailed information", async () => {
-    render(
-      <ThemeProvider>
-        <Provider store={store}>
-          <RouterProvider
-            router={router}
-            fallbackElement={<div>Loading...</div>}
-          />
-        </Provider>
-      </ThemeProvider>,
-    );
-
-    await waitFor(() => {
-      const lukeSkywalker = screen.getByText("Luke Skywalker");
-      lukeSkywalker.click();
-    });
-
-    await waitFor(() => {
+      const navList = screen.getByTestId("nav-list");
+      const lukeSkywalker = within(navList).getByText("Luke Skywalker");
+      fireEvent.click(lukeSkywalker);
       const detailsContainer = screen.getByTestId("character-details");
+      within(detailsContainer).getByText("Luke Skywalker");
+
+      expect(
+        within(detailsContainer).getByText("Luke Skywalker"),
+      ).toBeInTheDocument();
       expect(
         within(detailsContainer).getByText("birth year: 19BBY"),
       ).toBeInTheDocument();

@@ -6,11 +6,11 @@ import FlyoutSelected from "../components/flyout/FlyoutSelected";
 import Loader from "../components/loader/Loader";
 import NavList from "../components/navList/NavList";
 import Pagination from "../components/pagination/Pagination";
-import "../components/root/Root.css";
 import Search from "../components/search/Search";
 import ThemeSelector from "../components/themeSelector/ThemeSelector";
 import { usePageLoading } from "../hooks/usePageLoading";
 import { starWarsApi } from "../services/api";
+import "./Root.css";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const getServerSideProps = wrapper.getServerSideProps(

@@ -9,9 +9,13 @@ const ThemeSelector = () => {
   const { isDark, toggleTheme } = useTheme();
 
   return (
-    <div className={"theme-button"} onClick={toggleTheme}>
-      {isDark ? <Image src={moon} alt="moon" /> : <Image src={sun} alt="sun" />}
-    </div>
+    <button className={"theme-button"} onClick={toggleTheme}>
+      {isDark ? (
+        <Image src={moon} width={50} height={50} alt="moon" />
+      ) : (
+        <Image src={sun} width={50} height={50} alt="sun" />
+      )}
+    </button>
   );
 };
 
