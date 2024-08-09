@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 
 import { wrapper } from "../app/store";
-import ErrorButton from "../components/errorButton/ErrorButton";
 import FlyoutSelected from "../components/flyout/FlyoutSelected";
 import Loader from "../components/loader/Loader";
 import NavList from "../components/navList/NavList";
@@ -80,7 +79,6 @@ export default function Root() {
     <>
       <section className="side-nav">
         <ThemeSelector />
-        <ErrorButton />
         <Search />
         {renderContent()}
       </section>

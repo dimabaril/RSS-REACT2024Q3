@@ -7,9 +7,9 @@ export const concertObjectToCsv = <T extends object>(array: T[]) => {
     return Object.values(row)
       .map((value) => {
         if (Array.isArray(value)) {
-          return value.join("; ");
+          return value.join('", "');
         }
-        return value.replaceAll(",", ";");
+        return value.replaceAll(",", '", "');
       })
       .join(",");
   });

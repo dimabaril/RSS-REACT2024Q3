@@ -1,30 +1,24 @@
-"use client";
-
-// import Cookies from "js-cookie";
+import Cookies from "js-cookie";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
-// import { useEffect } from "react";
-import { useStateLocalStorage } from "../../hooks/useStateLocalStorage";
+import { useStateStorage } from "../../hooks/useStateCookiesStorage";
 import "./Search.scss";
 
 export default function Search() {
-  const [searchTerm, setSearchTerm, setLocalStorageSearchTerm] =
-    useStateLocalStorage("searchTerm", "");
+  const [searchTerm, setSearchTerm, setStorageSearchTerm] = useStateStorage(
+    "searchTerm",
+    "",
+  );
   const router = useRouter();
 
-  // useEffect(() => {
-  //   const search = router.query.search;
-  //   console.log("search", search, router);
-  //   const savedSearch = Cookies.get("searchTerm");
-  //   console.log("savedSearch", savedSearch);
-
-  //   if (!search && savedSearch) {
-  //     router.push({
-  //       pathname: router.pathname,
-  //       query: { search: savedSearch },
-  //     });
-  //   }
-  // }, [router, router.query.search]);
+  useEffect(() => {
+    const search = router.query.search;
+    const savedSearch = Cookies.get("searchTerm");
+    if (search && search !== savedSearch) {
+      setSearchTerm(search as string);
+    }
+  }, [router.query.search, setSearchTerm]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -37,10 +31,13 @@ export default function Search() {
   ) {
     event.preventDefault();
     const trimmedSearchTerm = searchTerm.trim();
-    setLocalStorageSearchTerm(trimmedSearchTerm);
+    setStorageSearchTerm(trimmedSearchTerm);
+
+    const currentQuery = { ...router.query };
+    delete currentQuery.page;
     router.push({
       pathname: router.pathname,
-      query: { search: trimmedSearchTerm },
+      query: { ...currentQuery, search: trimmedSearchTerm },
     });
   }
 

@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
@@ -37,13 +38,19 @@ export default function CharacterDetails() {
   const { isPageLoading } = usePageLoading();
 
   const close = () => {
-    const location = localStorage.getItem("onCloseDetailsLocation");
+    const location = Cookies.get("onCloseDetailsLocation");
     router.push(location ? JSON.parse(location) : "/");
   };
 
   const clickHandler = (event: MouseEvent) => {
     const target = event.target as HTMLElement;
-    if (target.closest(".character-card") || target.closest(".nav-list__item"))
+    if (
+      target.closest(".character-card") ||
+      target.closest(".nav-list__item") ||
+      target.closest(".search__input") ||
+      target.closest(".search__button") ||
+      target.closest(".pagination__button")
+    )
       return;
     close();
   };
