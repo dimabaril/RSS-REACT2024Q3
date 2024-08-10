@@ -1,17 +1,7 @@
-import { useRouter } from "next/router";
-
 import { wrapper } from "../app/store";
-import FlyoutSelected from "../components/flyout/FlyoutSelected";
-import Loader from "../components/loader/Loader";
-import NavList from "../components/navList/NavList";
-import Pagination from "../components/pagination/Pagination";
-import Search from "../components/search/Search";
-import ThemeSelector from "../components/themeSelector/ThemeSelector";
-import { usePageLoading } from "../hooks/usePageLoading";
+import Root from "../components/root/Root";
 import { starWarsApi } from "../services/api";
-import "./Root.css";
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (context) => {
     const { query } = context;
@@ -32,57 +22,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
   },
 );
 
-export default function Root() {
-  const router = useRouter();
-  const searchParams = new URLSearchParams(
-    router.query as Record<string, string>,
-  );
-  searchParams.delete("id");
-  const { data, error } = starWarsApi.useGetCharactersQuery(
-    searchParams.toString(),
-  );
-  const { isPageLoading } = usePageLoading();
-
-  const renderContent = () => {
-    if (isPageLoading) {
-      return <Loader />;
-    }
-
-    if (error) {
-      if ("status" in error) {
-        const errMsg =
-          "error" in error ? error.error : JSON.stringify(error.data);
-
-        return (
-          <div>
-            <div>An error has occurred:</div>
-            <div>{errMsg}</div>
-          </div>
-        );
-      }
-      return <div>{error.message}</div>;
-    }
-
-    if (data) {
-      return (
-        <>
-          <NavList response={data} />
-          <Pagination response={data} />
-        </>
-      );
-    }
-
-    return null;
-  };
-
-  return (
-    <>
-      <section className="side-nav">
-        <ThemeSelector />
-        <Search />
-        {renderContent()}
-      </section>
-      <FlyoutSelected />
-    </>
-  );
+export default function index() {
+  return <Root />;
 }

@@ -2,14 +2,14 @@ import { fireEvent, screen, waitFor, within } from "@testing-library/react";
 import mockRouter from "next-router-mock";
 import { describe, expect, it } from "vitest";
 
-import Root from "../pages/index.tsx";
-import CharacterDetails from "../pages/people/[id].tsx";
+import Index from "../pages/index.tsx";
+import Id from "../pages/people/[id].tsx";
 import { renderWithProviders } from "./wrappedRender/wrappedRender.tsx";
 
 describe("CharacterDetails Component", () => {
   it("displays correct number of cards", async () => {
     mockRouter.push("/");
-    renderWithProviders(<Root />);
+    renderWithProviders(<Index />);
 
     await waitFor(() => {
       expect(screen.getAllByRole("link").length).toBe(10);
@@ -18,7 +18,7 @@ describe("CharacterDetails Component", () => {
 
   it("displays correct personal data after fetching", async () => {
     mockRouter.push("/people/1");
-    renderWithProviders(<CharacterDetails />);
+    renderWithProviders(<Id />);
 
     await waitFor(() => {
       const characterDetailsContainer = screen.getByTestId("character-details");
@@ -48,7 +48,7 @@ describe("CharacterDetails Component", () => {
 
   it("element is removed after click close button", async () => {
     mockRouter.push("/people/1");
-    renderWithProviders(<CharacterDetails />);
+    renderWithProviders(<Id />);
 
     await waitFor(() => {
       expect(screen.getByText("height: 172 cm.")).toBeInTheDocument();
@@ -68,7 +68,7 @@ describe("CharacterDetails Component", () => {
 
   it("element is removed after click away from card", async () => {
     mockRouter.push("/people/1");
-    renderWithProviders(<CharacterDetails />);
+    renderWithProviders(<Id />);
 
     await waitFor(() => {
       expect(screen.getByText("height: 172 cm.")).toBeInTheDocument();
@@ -88,17 +88,16 @@ describe("CharacterDetails Component", () => {
 
   it("displays 404 page when user navigates to non-existing route", async () => {
     mockRouter.push("/people/12345");
-    renderWithProviders(<CharacterDetails />);
+    renderWithProviders(<Id />);
 
     await waitFor(() => {
       expect(screen.getByText(/Not found/)).toBeInTheDocument();
-      screen.debug();
     });
   });
 
   it("displays search result ?search=lu", async () => {
     mockRouter.push("/?search=lu");
-    renderWithProviders(<Root />);
+    renderWithProviders(<Index />);
 
     await waitFor(() => {
       expect(screen.getAllByRole("link").length).toBe(2);
@@ -107,7 +106,7 @@ describe("CharacterDetails Component", () => {
 
   it("displays search result ?search=unknown", async () => {
     mockRouter.push("/?search=unknown");
-    renderWithProviders(<Root />);
+    renderWithProviders(<Index />);
 
     await waitFor(() => {
       expect(screen.getByText("No results found")).toBeInTheDocument();
