@@ -1,4 +1,5 @@
 import Cookies from "js-cookie";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
@@ -88,8 +89,14 @@ export default function CharacterDetails() {
               eye color: {data.eye_color}
             </li>
           </ul>
+
           <div className="character-card__img">
-            <img src={getSWCharacterImageUrlById(Number(id))} alt="img" />
+            <Image
+              src={getSWCharacterImageUrlById(Number(id))}
+              alt="img"
+              width={500}
+              height={500}
+            />
           </div>
           <button className="character-card__close" onClick={close}>
             ×

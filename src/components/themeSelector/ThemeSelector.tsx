@@ -11,9 +11,9 @@ const ThemeSelector = () => {
   return (
     <button className={"theme-button"} onClick={toggleTheme}>
       {isDark ? (
-        <Image src={moon} width={50} height={50} priority={false} alt="moon" />
+        <Image src={moon} width={50} height={50} alt="moon" />
       ) : (
-        <Image src={sun} width={50} height={50} priority={false} alt="sun" />
+        <Image src={sun} width={50} height={50} alt="sun" />
       )}
     </button>
   );

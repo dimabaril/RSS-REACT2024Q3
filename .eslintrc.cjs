@@ -3,6 +3,7 @@ module.exports = {
   env: { browser: true, es2020: true },
   extends: [
     "eslint:recommended",
+    "next",
     "plugin:@typescript-eslint/recommended",
     "plugin:react-hooks/recommended",
     "prettier",
@@ -12,7 +13,7 @@ module.exports = {
   plugins: ["react-refresh", "react-compiler"],
   rules: {
     "react-refresh/only-export-components": [
-      "warn",
+      "off",
       { allowConstantExport: true },
     ],
     "@typescript-eslint/no-explicit-any": "error",

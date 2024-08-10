@@ -1,6 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  distDir: "./dist", // Changes the build output directory to `./dist/`.
+  distDir: "./dist",
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "starwars-visualguide.com",
+        port: "",
+        pathname: "/assets/img/characters/**",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

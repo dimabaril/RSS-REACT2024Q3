@@ -3,7 +3,6 @@ import CharacterDetails from "../../components/characterDetails/CharacterDetails
 import Root from "../../components/root/Root";
 import { starWarsApi } from "../../services/api";
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (context) => {
     const { id } = context.query;
