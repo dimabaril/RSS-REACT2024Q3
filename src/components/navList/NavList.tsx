@@ -27,7 +27,11 @@ export default function NavList({ characters }: ContentProps) {
             {characters.results.map((character) => {
               const Id = character.url.split("/").filter(Boolean).pop();
               return (
-                <li key={character.url.toString()} className="nav-list__item">
+                <li
+                  key={character.url.toString()}
+                  className="nav-list__item"
+                  data-testid="nav-list__item"
+                >
                   <Link
                     href={`${PATH.ROOT}${PATH.PEOPLE}${Id}${searchParams?.size ? "?" + searchParams.toString() : ""}`}
                   >
