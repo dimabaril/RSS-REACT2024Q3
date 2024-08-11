@@ -13,7 +13,7 @@ export const peopleSelectedSlice = createSlice({
     setPeopleSelected: (state, action: PayloadAction<CharacterDetails>) => {
       state.push(action.payload);
     },
-    UnsetPeopleSelected: (state, action: PayloadAction<CharacterDetails>) => {
+    unsetPeopleSelected: (state, action: PayloadAction<CharacterDetails>) => {
       const index = state.findIndex(
         (character) => character.url === action.payload.url,
       );
@@ -29,15 +29,15 @@ export const peopleSelectedSlice = createSlice({
         state.splice(index, 1);
       }
     },
-    UnsetAllPeopleSelected: () => initialState,
+    unsetAllPeopleSelected: () => initialState,
   },
 });
 
 export const {
   setPeopleSelected,
-  UnsetPeopleSelected,
+  unsetPeopleSelected,
   togglePeopleSelected,
-  UnsetAllPeopleSelected,
+  unsetAllPeopleSelected,
 } = peopleSelectedSlice.actions;
 
 export const selectPeopleSelected = (state: RootState) => state.peopleSelected;

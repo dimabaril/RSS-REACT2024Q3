@@ -3,8 +3,11 @@ import { togglePeopleSelected } from "../../features/people/peopleSlice";
 import { CharacterDetails } from "../../interfaces/interfaces";
 import "./CharacterShort.scss";
 
-export default function CharacterShort(props: { character: CharacterDetails }) {
-  const { character } = props;
+interface ContentProps {
+  character: CharacterDetails;
+}
+
+export default function CharacterShort({ character }: ContentProps) {
   const dispatch = useAppDispatch();
 
   const isSelected = useAppSelector((state) =>

@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 
 import Pagination from "./Pagination";
 
-vi.mock("next/router", () => require("next-router-mock"));
+vi.mock("next/navigation", () => require("next-router-mock"));
 
 describe("Pagination Component", () => {
   it("renders with next and prev buttons", () => {

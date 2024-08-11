@@ -9,11 +9,11 @@ import {
 import { renderWithProviders } from "../../test/wrappedRender/wrappedRender";
 import NavList from "./NavList";
 
-vi.mock("next/router", () => require("next-router-mock"));
+vi.mock("next/navigation", () => require("next-router-mock"));
 
 describe("Card List component", () => {
   test("the component renders the specified number of cards", async () => {
-    renderWithProviders(<NavList response={mockedCharactersResponse} />);
+    renderWithProviders(<NavList characters={mockedCharactersResponse} />);
 
     await waitFor(() => {
       const characterDetailsContainer = screen.getByTestId("nav-list");
@@ -23,7 +23,7 @@ describe("Card List component", () => {
   });
 
   test("an appropriate message is displayed if no cards are present", () => {
-    renderWithProviders(<NavList response={MockedEmptyCharactersResponse} />);
+    renderWithProviders(<NavList characters={MockedEmptyCharactersResponse} />);
     const message = screen.getByText("No results found");
     expect(message).toBeInTheDocument();
   });
@@ -31,7 +31,7 @@ describe("Card List component", () => {
 
 describe("Card component", () => {
   test("the card component renders the relevant card data", async () => {
-    renderWithProviders(<NavList response={mockedCharactersResponse} />);
+    renderWithProviders(<NavList characters={mockedCharactersResponse} />);
 
     await waitFor(() => {
       const navList = screen.getByTestId("nav-list");

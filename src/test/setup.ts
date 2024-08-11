@@ -18,5 +18,5 @@ afterAll(() => server.close());
 
 global.URL.createObjectURL = vi.fn();
 
-vi.mock("next/router", () => require("next-router-mock"));
+vi.mock("next/navigation", () => require("next-router-mock"));
 mockRouter.useParser(createDynamicRouteParser(["/", "/people/[id]"]));

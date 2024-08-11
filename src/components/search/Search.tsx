@@ -1,24 +1,32 @@
+"use client";
+
 import Cookies from "js-cookie";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 import { useStateStorage } from "../../hooks/useStateCookiesStorage";
 import "./Search.scss";
 
-export default function Search() {
+export default function Search({
+  searchParams,
+}: {
+  searchParams: Record<string, string>;
+}) {
   const [searchTerm, setSearchTerm, setStorageSearchTerm] = useStateStorage(
     "searchTerm",
     "",
   );
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
-    const search = router.query.search;
+    const search = searchParams.search;
     const savedSearch = Cookies.get("searchTerm");
     if (search && search !== savedSearch) {
       setSearchTerm(search as string);
     }
-  }, [router.query.search, setSearchTerm]);
+  }, [searchParams.search, setSearchTerm]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -33,12 +41,11 @@ export default function Search() {
     const trimmedSearchTerm = searchTerm.trim();
     setStorageSearchTerm(trimmedSearchTerm);
 
-    const currentQuery = { ...router.query };
+    const currentQuery = { ...searchParams };
     delete currentQuery.page;
-    router.push({
-      pathname: router.pathname,
-      query: { ...currentQuery, search: trimmedSearchTerm },
-    });
+    router.push(
+      `${pathname}?${new URLSearchParams({ ...currentQuery, search: trimmedSearchTerm }).toString()}`,
+    );
   }
 
   return (

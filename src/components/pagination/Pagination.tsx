@@ -1,32 +1,30 @@
-import { useRouter } from "next/router";
+"use client";
+
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { Characters } from "../../interfaces/interfaces";
 import "./Pagination.scss";
 
 interface ContentProps {
-  response: Characters;
+  characters: Characters;
 }
-export default function Pagination(props: ContentProps) {
+export default function Pagination({ characters }: ContentProps) {
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
-  const prevPage = props.response.previous
-    ? new URL(props.response.previous).searchParams.get("page")
+  const prevPage = characters.previous
+    ? new URL(characters.previous).searchParams.get("page")
     : null;
-  const nextPage = props.response.next
-    ? new URL(props.response.next).searchParams.get("page")
+  const nextPage = characters.next
+    ? new URL(characters.next).searchParams.get("page")
     : null;
 
   const handlerPage = (page: string | null) => () => {
     if (!page) return;
-    const searchParams = new URLSearchParams(
-      router.query as Record<string, string>,
-    );
-
-    searchParams.set("page", page);
-    router.push({
-      pathname: router.pathname,
-      query: Object.fromEntries(searchParams.entries()),
-    });
+    const currentSearch = new URLSearchParams(searchParams?.toString());
+    currentSearch.set("page", page);
+    router.push(`${pathname}?${currentSearch.toString()}`);
   };
 
   return (

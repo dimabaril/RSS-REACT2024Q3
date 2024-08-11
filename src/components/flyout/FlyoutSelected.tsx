@@ -1,8 +1,10 @@
+"use client";
+
 import { useEffect, useState } from "react";
 
 import { useAppSelector } from "../../app/hooks";
 import { useAppDispatch } from "../../app/hooks";
-import { UnsetAllPeopleSelected } from "../../features/people/peopleSlice";
+import { unsetAllPeopleSelected } from "../../features/people/peopleSlice";
 import { concertObjectToCsv } from "../../helpers/convertObjectToCsv";
 import { createBlobURL } from "../../helpers/createBlobURL";
 import "./FlyoutSelected.scss";
@@ -16,7 +18,7 @@ function FlyoutSelected() {
   const isOpen = Boolean(count);
 
   const unselectAll = () => {
-    dispatch(UnsetAllPeopleSelected());
+    dispatch(unsetAllPeopleSelected());
   };
 
   useEffect(() => {

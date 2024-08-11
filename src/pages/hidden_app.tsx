@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 import type { AppProps } from "next/app";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import React, { FC, useEffect } from "react";
 import { Provider } from "react-redux";
 
