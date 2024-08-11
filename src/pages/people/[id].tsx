@@ -32,7 +32,7 @@ export default function Id() {
   return (
     <>
       <Root />
-      <CharacterDetails />;
+      <CharacterDetails />
     </>
   );
 }
