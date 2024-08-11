@@ -1,32 +1,20 @@
-import { render, screen, waitFor, within } from "@testing-library/react";
-import { Provider } from "react-redux";
-import { RouterProvider, createMemoryRouter } from "react-router-dom";
+import { screen, waitFor, within } from "@testing-library/react";
+import mockRouter from "next-router-mock";
 import { describe, expect, it } from "vitest";
 
-import { store } from "../../app/store";
-import { ThemeProvider } from "../../contexts/ThemeContext";
-import { routs } from "../../router";
+import CharacterDetails from "../../pages/people/[id]";
 import { mockedCharacterDetailResponse } from "../../test/mock/mocks";
+import { renderWithProviders } from "../../test/wrappedRender/wrappedRender";
 
 describe("CharacterDetails", () => {
   it("renders the character data", async () => {
-    const router = createMemoryRouter(routs, {
-      initialEntries: ["/people/1"],
-      initialIndex: 0,
-    });
-    render(
-      <ThemeProvider>
-        <Provider store={store}>
-          <RouterProvider
-            router={router}
-            fallbackElement={<div>Loading...</div>}
-          />
-        </Provider>
-      </ThemeProvider>,
-    );
+    mockRouter.push("/people/1");
+
+    renderWithProviders(<CharacterDetails />);
 
     await waitFor(() => {
       const characterDetailsContainer = screen.getByTestId("character-details");
+
       expect(
         within(characterDetailsContainer).getByText(
           mockedCharacterDetailResponse.name,

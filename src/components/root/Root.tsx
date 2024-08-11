@@ -1,8 +1,7 @@
-import { useEffect } from "react";
-import { Outlet, useSearchParams } from "react-router-dom";
+import { useRouter } from "next/router";
 
+import { usePageLoading } from "../../hooks/usePageLoading";
 import { starWarsApi } from "../../services/api";
-import ErrorButton from "../errorButton/ErrorButton";
 import FlyoutSelected from "../flyout/FlyoutSelected";
 import Loader from "../loader/Loader";
 import NavList from "../navList/NavList";
@@ -12,35 +11,55 @@ import ThemeSelector from "../themeSelector/ThemeSelector";
 import "./Root.css";
 
 export default function Root() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const { data, error, isFetching } = starWarsApi.useGetCharactersQuery(
+  const router = useRouter();
+  const searchParams = new URLSearchParams(
+    router.query as Record<string, string>,
+  );
+  searchParams.delete("id");
+  const { data, error } = starWarsApi.useGetCharactersQuery(
     searchParams.toString(),
   );
+  const { isPageLoading } = usePageLoading();
 
-  // Set search term from local storage if it exists
-  useEffect(() => {
-    const search = searchParams.get("search") || "";
-    const savedSearch = localStorage.getItem("searchTerm") || "";
-    if (search) return;
-    if (savedSearch) {
-      setSearchParams((params) => {
-        const newParams = new URLSearchParams(params);
-        newParams.set("search", savedSearch);
-        return newParams;
-      });
+  const renderContent = () => {
+    if (isPageLoading) {
+      return <Loader />;
     }
-  }, [searchParams, setSearchParams]);
+
+    if (error) {
+      if ("status" in error) {
+        const errMsg =
+          "error" in error ? error.error : JSON.stringify(error.data);
+
+        return (
+          <div>
+            <div>An error has occurred:</div>
+            <div>{errMsg}</div>
+          </div>
+        );
+      }
+      return <div>{error.message}</div>;
+    }
+
+    if (data) {
+      return (
+        <>
+          <NavList response={data} />
+          <Pagination response={data} />
+        </>
+      );
+    }
+
+    return null;
+  };
 
   return (
     <>
       <section className="side-nav">
         <ThemeSelector />
-        <ErrorButton />
         <Search />
-        {isFetching || !data ? <Loader /> : <NavList response={data} />}
-        {isFetching || error || !data ? null : <Pagination response={data} />}
+        {renderContent()}
       </section>
-      <Outlet />
       <FlyoutSelected />
     </>
   );

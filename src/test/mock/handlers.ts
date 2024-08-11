@@ -4,15 +4,25 @@ import {
   MockedEmptyCharactersResponse,
   MockedSearchLuCharacterResponse,
   mockedCharacterDetailResponse,
+  mockedCharacterDetailResponse_2,
   mockedCharactersResponse,
 } from "./mocks";
 
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export const handlers = [
-  http.get("https://swapi.dev/api/people/:id", ({ params }) => {
+  http.get("https://swapi.dev/api/people/:id", async ({ params }) => {
     const { id } = params;
+    await delay(50);
 
     if (id === "1") {
       return HttpResponse.json(mockedCharacterDetailResponse, { status: 200 });
+    }
+
+    if (id === "2") {
+      return HttpResponse.json(mockedCharacterDetailResponse_2, {
+        status: 200,
+      });
     }
 
     if (id === "12345") {

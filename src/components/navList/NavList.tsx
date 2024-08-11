@@ -1,4 +1,6 @@
-import { NavLink, useLocation } from "react-router-dom";
+import Cookies from "js-cookie";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 import { PATH } from "../../constants";
 import { Characters } from "../../interfaces/interfaces";
@@ -11,11 +13,16 @@ interface ContentProps {
 
 export default function NavList(props: ContentProps) {
   const { response } = props;
-  const location = useLocation();
+  const router = useRouter();
+  const searchParams = new URLSearchParams(
+    router.query as Record<string, string>,
+  );
+  searchParams.delete("id");
 
   // Save location to return the same page after closing details
-  if (location.pathname === PATH.ROOT)
-    localStorage.setItem("onCloseDetailsLocation", JSON.stringify(location));
+  if (router.pathname === PATH.ROOT) {
+    Cookies.set("onCloseDetailsLocation", JSON.stringify(router.asPath));
+  }
 
   return (
     <>
@@ -30,14 +37,11 @@ export default function NavList(props: ContentProps) {
               const Id = character.url.split("/").filter(Boolean).pop();
               return (
                 <li key={character.url.toString()} className="nav-list__item">
-                  <NavLink
-                    to={`${PATH.PEOPLE}${Id}${location.search}`}
-                    className={({ isActive, isPending }) =>
-                      `nav-link ${isActive ? "active" : isPending ? "pending" : ""}`
-                    }
+                  <Link
+                    href={`${PATH.ROOT}${PATH.PEOPLE}${Id}${searchParams.size ? "?" + searchParams.toString() : ""}`}
                   >
                     <CharacterShort character={character} />
-                  </NavLink>
+                  </Link>
                 </li>
               );
             })}

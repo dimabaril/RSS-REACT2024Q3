@@ -1,17 +1,11 @@
 import { render, screen } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import Pagination from "./Pagination";
 
-describe("Pagination Component", () => {
-  beforeEach(() => {
-    localStorage.clear();
-  });
-  afterEach(() => {
-    localStorage.clear();
-  });
+vi.mock("next/router", () => require("next-router-mock"));
 
+describe("Pagination Component", () => {
   it("renders with next and prev buttons", () => {
     const response = {
       previous: "http://example.com/api/characters?page=1",
@@ -20,11 +14,7 @@ describe("Pagination Component", () => {
       results: [],
     };
 
-    render(
-      <MemoryRouter>
-        <Pagination response={response} />
-      </MemoryRouter>,
-    );
+    render(<Pagination response={response} />);
 
     expect(screen.getByText("Prev")).toBeInTheDocument();
     expect(screen.getByText("Next")).toBeInTheDocument();
@@ -38,11 +28,7 @@ describe("Pagination Component", () => {
       results: [],
     };
 
-    render(
-      <MemoryRouter>
-        <Pagination response={response} />
-      </MemoryRouter>,
-    );
+    render(<Pagination response={response} />);
 
     expect(screen.getByText("Prev")).toBeDisabled();
     expect(screen.getByText("Next")).not.toBeDisabled();
@@ -56,11 +42,7 @@ describe("Pagination Component", () => {
       results: [],
     };
 
-    render(
-      <MemoryRouter>
-        <Pagination response={response} />
-      </MemoryRouter>,
-    );
+    render(<Pagination response={response} />);
 
     expect(screen.getByText("Prev")).not.toBeDisabled();
     expect(screen.getByText("Next")).toBeDisabled();

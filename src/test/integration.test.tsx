@@ -1,110 +1,24 @@
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  within,
-} from "@testing-library/react";
-import { Provider } from "react-redux";
-import { RouterProvider, createMemoryRouter } from "react-router-dom";
+import { fireEvent, screen, waitFor, within } from "@testing-library/react";
+import mockRouter from "next-router-mock";
 import { describe, expect, it } from "vitest";
 
-import { store } from "../app/store.ts";
-import { ThemeProvider } from "../contexts/ThemeContext.tsx";
-import { router, routs } from "../router.tsx";
+import Index from "../pages/index.tsx";
+import Id from "../pages/people/[id].tsx";
+import { renderWithProviders } from "./wrappedRender/wrappedRender.tsx";
 
 describe("CharacterDetails Component", () => {
-  it("displays loading indicator while fetching data main page", async () => {
-    render(
-      <ThemeProvider>
-        <Provider store={store}>
-          <RouterProvider
-            router={router}
-            fallbackElement={<div>Loading...</div>}
-          />
-        </Provider>
-      </ThemeProvider>,
-    );
-
-    await waitFor(() => {
-      expect(screen.getByText("Loading...")).toBeInTheDocument();
-    });
-  });
-
   it("displays correct number of cards", async () => {
-    render(
-      <ThemeProvider>
-        <Provider store={store}>
-          <RouterProvider
-            router={router}
-            fallbackElement={<div>Loading...</div>}
-          />
-        </Provider>
-      </ThemeProvider>,
-    );
+    mockRouter.push("/");
+    renderWithProviders(<Index />);
 
     await waitFor(() => {
       expect(screen.getAllByRole("link").length).toBe(10);
     });
   });
 
-  it("displays hint when no character is selected", async () => {
-    render(
-      <ThemeProvider>
-        <Provider store={store}>
-          <RouterProvider
-            router={router}
-            fallbackElement={<div>Loading...</div>}
-          />
-        </Provider>
-      </ThemeProvider>,
-    );
-    await waitFor(() => {
-      expect(
-        screen.getByText("Select some persona, for details"),
-      ).toBeInTheDocument();
-    });
-  });
-
-  it("displays loading indicator while fetching personal data", async () => {
-    const router = createMemoryRouter(routs, {
-      initialEntries: ["/people/1"],
-      initialIndex: 0,
-    });
-    render(
-      <ThemeProvider>
-        <Provider store={store}>
-          <RouterProvider
-            router={router}
-            fallbackElement={<div>Loading...</div>}
-          />
-        </Provider>
-      </ThemeProvider>,
-    );
-
-    await waitFor(() => {
-      const detailsContainer = screen.getByTestId("character-details");
-      expect(
-        within(detailsContainer).getByText("Loading..."),
-      ).toBeInTheDocument();
-    });
-  });
-
   it("displays correct personal data after fetching", async () => {
-    const router = createMemoryRouter(routs, {
-      initialEntries: ["/people/1"],
-      initialIndex: 0,
-    });
-    render(
-      <ThemeProvider>
-        <Provider store={store}>
-          <RouterProvider
-            router={router}
-            fallbackElement={<div>Loading...</div>}
-          />
-        </Provider>
-      </ThemeProvider>,
-    );
+    mockRouter.push("/people/1");
+    renderWithProviders(<Id />);
 
     await waitFor(() => {
       const characterDetailsContainer = screen.getByTestId("character-details");
@@ -133,20 +47,8 @@ describe("CharacterDetails Component", () => {
   });
 
   it("element is removed after click close button", async () => {
-    const router = createMemoryRouter(routs, {
-      initialEntries: ["/people/1"],
-      initialIndex: 0,
-    });
-    render(
-      <ThemeProvider>
-        <Provider store={store}>
-          <RouterProvider
-            router={router}
-            fallbackElement={<div>Loading...</div>}
-          />
-        </Provider>
-      </ThemeProvider>,
-    );
+    mockRouter.push("/people/1");
+    renderWithProviders(<Id />);
 
     await waitFor(() => {
       expect(screen.getByText("height: 172 cm.")).toBeInTheDocument();
@@ -165,20 +67,8 @@ describe("CharacterDetails Component", () => {
   });
 
   it("element is removed after click away from card", async () => {
-    const router = createMemoryRouter(routs, {
-      initialEntries: ["/people/1"],
-      initialIndex: 0,
-    });
-    render(
-      <ThemeProvider>
-        <Provider store={store}>
-          <RouterProvider
-            router={router}
-            fallbackElement={<div>Loading...</div>}
-          />
-        </Provider>
-      </ThemeProvider>,
-    );
+    mockRouter.push("/people/1");
+    renderWithProviders(<Id />);
 
     await waitFor(() => {
       expect(screen.getByText("height: 172 cm.")).toBeInTheDocument();
@@ -197,20 +87,8 @@ describe("CharacterDetails Component", () => {
   });
 
   it("displays 404 page when user navigates to non-existing route", async () => {
-    const router = createMemoryRouter(routs, {
-      initialEntries: ["/people/12345"],
-      initialIndex: 0,
-    });
-    render(
-      <ThemeProvider>
-        <Provider store={store}>
-          <RouterProvider
-            router={router}
-            fallbackElement={<div>Loading...</div>}
-          />
-        </Provider>
-      </ThemeProvider>,
-    );
+    mockRouter.push("/people/12345");
+    renderWithProviders(<Id />);
 
     await waitFor(() => {
       expect(screen.getByText(/Not found/)).toBeInTheDocument();
@@ -218,20 +96,8 @@ describe("CharacterDetails Component", () => {
   });
 
   it("displays search result ?search=lu", async () => {
-    const router = createMemoryRouter(routs, {
-      initialEntries: ["/?search=lu"],
-      initialIndex: 0,
-    });
-    render(
-      <ThemeProvider>
-        <Provider store={store}>
-          <RouterProvider
-            router={router}
-            fallbackElement={<div>Loading...</div>}
-          />
-        </Provider>
-      </ThemeProvider>,
-    );
+    mockRouter.push("/?search=lu");
+    renderWithProviders(<Index />);
 
     await waitFor(() => {
       expect(screen.getAllByRole("link").length).toBe(2);
@@ -239,20 +105,8 @@ describe("CharacterDetails Component", () => {
   });
 
   it("displays search result ?search=unknown", async () => {
-    const router = createMemoryRouter(routs, {
-      initialEntries: ["/?search=unknown"],
-      initialIndex: 0,
-    });
-    render(
-      <ThemeProvider>
-        <Provider store={store}>
-          <RouterProvider
-            router={router}
-            fallbackElement={<div>Loading...</div>}
-          />
-        </Provider>
-      </ThemeProvider>,
-    );
+    mockRouter.push("/?search=unknown");
+    renderWithProviders(<Index />);
 
     await waitFor(() => {
       expect(screen.getByText("No results found")).toBeInTheDocument();

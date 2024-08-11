@@ -1,34 +1,19 @@
 import "@testing-library/jest-dom";
-import { render, screen, waitFor, within } from "@testing-library/react";
-import { Provider } from "react-redux";
-import {
-  MemoryRouter,
-  RouterProvider,
-  createMemoryRouter,
-} from "react-router-dom";
-import { describe, expect, test } from "vitest";
+import { screen, waitFor, within } from "@testing-library/react";
+import { describe, expect, test, vi } from "vitest";
 
-import { store } from "../../app/store";
-import { ThemeProvider } from "../../contexts/ThemeContext";
-import { router, routs } from "../../router";
 import {
   MockedEmptyCharactersResponse,
   mockedCharactersResponse,
 } from "../../test/mock/mocks";
+import { renderWithProviders } from "../../test/wrappedRender/wrappedRender";
 import NavList from "./NavList";
+
+vi.mock("next/router", () => require("next-router-mock"));
 
 describe("Card List component", () => {
   test("the component renders the specified number of cards", async () => {
-    render(
-      <ThemeProvider>
-        <Provider store={store}>
-          <RouterProvider
-            router={router}
-            fallbackElement={<div>Loading...</div>}
-          />
-        </Provider>
-      </ThemeProvider>,
-    );
+    renderWithProviders(<NavList response={mockedCharactersResponse} />);
 
     await waitFor(() => {
       const characterDetailsContainer = screen.getByTestId("nav-list");
@@ -38,11 +23,7 @@ describe("Card List component", () => {
   });
 
   test("an appropriate message is displayed if no cards are present", () => {
-    render(
-      <MemoryRouter>
-        <NavList response={MockedEmptyCharactersResponse} />
-      </MemoryRouter>,
-    );
+    renderWithProviders(<NavList response={MockedEmptyCharactersResponse} />);
     const message = screen.getByText("No results found");
     expect(message).toBeInTheDocument();
   });
@@ -50,20 +31,7 @@ describe("Card List component", () => {
 
 describe("Card component", () => {
   test("the card component renders the relevant card data", async () => {
-    const router = createMemoryRouter(routs, {
-      initialEntries: ["/"],
-      initialIndex: 0,
-    });
-    render(
-      <ThemeProvider>
-        <Provider store={store}>
-          <RouterProvider
-            router={router}
-            fallbackElement={<div>Loading...</div>}
-          />
-        </Provider>
-      </ThemeProvider>,
-    );
+    renderWithProviders(<NavList response={mockedCharactersResponse} />);
 
     await waitFor(() => {
       const navList = screen.getByTestId("nav-list");

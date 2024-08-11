@@ -1,12 +1,24 @@
-import { Form, useSubmit } from "react-router-dom";
+import Cookies from "js-cookie";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
-import { useStateLocalStorage } from "../../hooks/useStateLocalStorage";
+import { useStateStorage } from "../../hooks/useStateCookiesStorage";
 import "./Search.scss";
 
 export default function Search() {
-  const [searchTerm, setSearchTerm, setLocalStorageSearchTerm] =
-    useStateLocalStorage("searchTerm", "");
-  const submit = useSubmit();
+  const [searchTerm, setSearchTerm, setStorageSearchTerm] = useStateStorage(
+    "searchTerm",
+    "",
+  );
+  const router = useRouter();
+
+  useEffect(() => {
+    const search = router.query.search;
+    const savedSearch = Cookies.get("searchTerm");
+    if (search && search !== savedSearch) {
+      setSearchTerm(search as string);
+    }
+  }, [router.query.search, setSearchTerm]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -19,13 +31,19 @@ export default function Search() {
   ) {
     event.preventDefault();
     const trimmedSearchTerm = searchTerm.trim();
-    setLocalStorageSearchTerm(trimmedSearchTerm);
-    submit(event.currentTarget.form);
+    setStorageSearchTerm(trimmedSearchTerm);
+
+    const currentQuery = { ...router.query };
+    delete currentQuery.page;
+    router.push({
+      pathname: router.pathname,
+      query: { ...currentQuery, search: trimmedSearchTerm },
+    });
   }
 
   return (
     <div className="search">
-      <Form className="search__form">
+      <form className="search__form">
         <input
           id="search"
           className="search__input"
@@ -38,7 +56,7 @@ export default function Search() {
         <button className="search__button" onClick={handleSearch}>
           Search
         </button>
-      </Form>
+      </form>
     </div>
   );
 }
