@@ -23,7 +23,11 @@ export default function CharacterShort({ character }: ContentProps) {
 
   return (
     <div className="character-short-card">
-      <div className="custom-checkbox" onClick={toggleSelected}>
+      <div
+        className="custom-checkbox"
+        data-testid="custom-checkbox"
+        onClick={toggleSelected}
+      >
         {isSelected && "✓"}
       </div>
       <strong className="character-short-card__item">{character.name}</strong>

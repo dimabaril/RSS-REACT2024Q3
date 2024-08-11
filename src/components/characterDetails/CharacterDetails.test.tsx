@@ -1,16 +1,32 @@
-import { screen, waitFor, within } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import mockRouter from "next-router-mock";
-import { describe, expect, it } from "vitest";
+import React from "react";
+import { describe, expect, it, vi } from "vitest";
 
-import CharacterDetails from "../../pages/people/[id]";
+import CharacterDetails from "../../components/characterDetails/CharacterDetails";
 import { mockedCharacterDetailResponse } from "../../test/mock/mocks";
-import { renderWithProviders } from "../../test/wrappedRender/wrappedRender";
+
+vi.mock("next/navigation", async () => {
+  const actual = await vi.importActual("next/navigation");
+  return {
+    ...actual,
+    useRouter: () => mockRouter,
+    useSearchParams: () => ({
+      get: (key: string) => {
+        if (key === "id") return "1";
+        return null;
+      },
+    }),
+  };
+});
 
 describe("CharacterDetails", () => {
   it("renders the character data", async () => {
-    mockRouter.push("/people/1");
+    const characterDetailsRender =
+      await (async (): Promise<React.ReactElement> =>
+        CharacterDetails({ params: { id: "1" } }))();
 
-    renderWithProviders(<CharacterDetails />);
+    render(<>{characterDetailsRender}</>);
 
     await waitFor(() => {
       const characterDetailsContainer = screen.getByTestId("character-details");

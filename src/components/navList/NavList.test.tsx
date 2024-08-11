@@ -9,7 +9,18 @@ import {
 import { renderWithProviders } from "../../test/wrappedRender/wrappedRender";
 import NavList from "./NavList";
 
-vi.mock("next/navigation", () => require("next-router-mock"));
+vi.mock("next/navigation", async () => {
+  const actual = await vi.importActual("next/navigation");
+  return {
+    ...actual,
+    useSearchParams: () => ({
+      get: (key: string) => {
+        if (key === "search") return "a";
+        return null;
+      },
+    }),
+  };
+});
 
 describe("Card List component", () => {
   test("the component renders the specified number of cards", async () => {
