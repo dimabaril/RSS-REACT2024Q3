@@ -1,7 +1,10 @@
 import { yupResolver } from "@hookform/resolvers/yup";
+import { countries } from "countries-list";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
 import * as yup from "yup";
 
+import { RootState } from "../../app/store";
 import "./ControlledForm.scss";
 
 interface IFormInput {
@@ -16,15 +19,16 @@ interface IFormInput {
   country: string;
 }
 
-const FILE_SIZE = 1024 * 1024; // Максимальный размер файла - 1MB
+const FILE_SIZE = 1024 * 1024;
 const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png"];
+const GENDER = ["male", "female", "other"];
 
 const firstUppercaseLetterSchema = yup
   .string()
-  .required("Name is required")
+  .required("name is required")
   .test(
     "first-uppercase-letter",
-    "The first letter must be uppercase",
+    "the first letter must be uppercase",
     (value) => {
       if (!value) return false;
       return /^[A-Z]/.test(value);
@@ -33,45 +37,45 @@ const firstUppercaseLetterSchema = yup
 
 const passwordSchema = yup
   .string()
-  .required("Password is required")
-  .min(8, "Password must be at least 8 characters long")
-  .matches(/[a-z]/, "Password must contain at least one lowercase letter")
-  .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
-  .matches(/\d/, "Password must contain at least one number")
-  .matches(/[@$!%*?&]/, "Password must contain at least one special character");
+  .required("password is required")
+  .min(8, "password must be at least 8 characters long")
+  .matches(/[a-z]/, "password must contain at least one lowercase letter")
+  .matches(/[A-Z]/, "password must contain at least one uppercase letter")
+  .matches(/\d/, "password must contain at least one number")
+  .matches(/[@$!%*?&]/, "password must contain at least one special character");
 
 const schema = yup.object().shape({
   name: firstUppercaseLetterSchema,
   age: yup
     .number()
-    .typeError("Age is required")
-    .required("Age is required")
-    .max(100, "Age must be less than 100")
+    .typeError("age must be a number")
+    .required("age is required")
+    .max(100, "age must be less than 100")
     .positive()
     .integer(),
-  email: yup.string().required("Email is required").email(),
+  email: yup.string().required("email is required").email(),
   password: passwordSchema,
   confirmPassword: yup
     .string()
-    .required("Confirm Password is required")
-    .oneOf([yup.ref("password")], "Passwords must match"),
+    .required("confirm Password is required")
+    .oneOf([yup.ref("password")], "passwords must match"),
   gender: yup
     .mixed<"male" | "female" | "other">()
-    .required("Gender is required")
+    .required("gender is required")
     .oneOf(["male", "female", "other"]),
   acceptTermsConditions: yup
     .boolean()
-    .required("Accept T&C is required")
-    .oneOf([true], "Accept T&C is required"),
+    .required("accept T&C is required")
+    .oneOf([true], "accept T&C is required"),
   picture: yup
     .mixed<FileList>()
-    .required("File is required")
-    .test("required", "File is required", (files) => {
+    .required("file is required")
+    .test("required", "file is required", (files) => {
       return files && files.length > 0;
     })
     .test(
       "fileSize",
-      `File size must not be more than ${FILE_SIZE}`,
+      `file size must not be more than ${FILE_SIZE}`,
       (files) => {
         if (files[0]) {
           return files[0].size <= FILE_SIZE;
@@ -79,13 +83,19 @@ const schema = yup.object().shape({
         return true;
       },
     )
-    .test("fileFormat", "Only jpeg and png files are allowed", (files) => {
+    .test("fileFormat", "only jpeg and png files are allowed", (files) => {
       if (files[0]) {
         return SUPPORTED_FORMATS.includes(files[0].type);
       }
       return true;
     }),
-  country: yup.string().required("Country is required"),
+  country: yup
+    .string()
+    .required("country is required")
+    .oneOf(
+      Object.values(countries).map((country) => country.name),
+      "invalid country",
+    ),
 });
 
 export default function ControlledForm() {
@@ -95,76 +105,88 @@ export default function ControlledForm() {
     formState: { errors },
   } = useForm<IFormInput>({
     resolver: yupResolver(schema),
+    mode: "onChange",
   });
+
+  const countries = useSelector((state: RootState) => state.countries);
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
 
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <label htmlFor="name">
-        Name
+        Name:
         <input placeholder="name" {...register("name")} />
       </label>
-      {errors.name && <p>{errors.name.message}</p>}
+      <span className="error">{errors.name?.message}</span>
       <label htmlFor="age">
-        Age
+        Age:
         <input placeholder="35" type="number" {...register("age")} />
       </label>
-      {errors.age && <p>{errors.age.message}</p>}
+      <span className="error">{errors.age?.message}</span>
       <label htmlFor="email">
-        Email
+        Email:
         <input
           placeholder="yourmail@mail.com"
           type="email"
           {...register("email")}
         />
       </label>
-      {errors.email && <p>{errors.email.message}</p>}
+      <span className="error">{errors.email?.message}</span>
       <label htmlFor="password">
-        Password
+        Password:
         <input
           placeholder="password"
           type="password"
           {...register("password")}
         />
       </label>
-      {errors.password && <p>{errors.password.message}</p>}
+      <span className="error">{errors.password?.message}</span>
       <label htmlFor="confirmPassword">
-        Confirm Password
+        Confirm Password:
         <input
           placeholder="password"
           type="password"
           {...register("confirmPassword")}
         />
       </label>
-      {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
+      <span className="error">{errors.confirmPassword?.message}</span>
       <label htmlFor="gender">
-        Gender
+        Gender:
         <select {...register("gender")}>
           <option value="">select...</option>
-          <option value="male">male</option>
-          <option value="female">female</option>
-          <option value="other">other</option>
+          {GENDER.map((gender) => (
+            <option key={gender} value={gender}>
+              {gender}
+            </option>
+          ))}
         </select>
       </label>
-      {errors.gender && <p>{errors.gender.message}</p>}
+      <span className="error">{errors.gender?.message}</span>
       <label>
         <input type="checkbox" {...register("acceptTermsConditions")} />
         Accept Terms and Conditions
       </label>
-      {errors.acceptTermsConditions && (
-        <p>{errors.acceptTermsConditions.message}</p>
-      )}
+      <span className="error">{errors.acceptTermsConditions?.message}</span>
       <label htmlFor="picture">
-        Picture
+        Picture:
         <input type="file" {...register("picture")} />
       </label>
-      {errors.picture && <p>{errors.picture.message}</p>}
+      <span className="error">{errors.picture?.message}</span>
       <label htmlFor="country">
-        Country
-        <input {...register("country")} />
+        Country:
+        <input
+          list="countries"
+          placeholder="country"
+          {...register("country")}
+        />
+        <datalist id="countries">
+          {countries.map((country) => (
+            <option key={country} value={country} />
+          ))}
+        </datalist>
       </label>
-      {errors.country && <p>{errors.country.message}</p>}
+      <span className="error">{errors.country?.message}</span>
 
       <button type="submit">Submit</button>
     </form>
