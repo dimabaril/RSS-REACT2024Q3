@@ -1,23 +1,14 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { countries } from "countries-list";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
 import * as yup from "yup";
 
+import { addFormData } from "../../app/formDataSlice";
+import { fileToBase64 } from "../../app/helpers/fileToBase64";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { RootState } from "../../app/store";
+import { FormInput } from "../../types/types";
 import "./ControlledForm.scss";
-
-interface IFormInput {
-  name: string;
-  age: number;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  gender: "male" | "female" | "other";
-  acceptTermsConditions: boolean;
-  picture: FileList;
-  country: string;
-}
 
 const FILE_SIZE = 1024 * 1024;
 const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png"];
@@ -103,14 +94,18 @@ export default function ControlledForm() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IFormInput>({
+  } = useForm<FormInput>({
     resolver: yupResolver(schema),
     mode: "onChange",
   });
+  const countries = useAppSelector((state: RootState) => state.countries);
+  const dispatch = useAppDispatch();
 
-  const countries = useSelector((state: RootState) => state.countries);
-
-  const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<FormInput> = async (data) => {
+    console.log(data);
+    const base64Picture = await fileToBase64(data.picture[0]);
+    dispatch(addFormData({ ...data, picture: base64Picture }));
+  };
 
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
@@ -119,11 +114,13 @@ export default function ControlledForm() {
         <input placeholder="name" {...register("name")} />
       </label>
       <span className="error">{errors.name?.message}</span>
+
       <label htmlFor="age">
         Age:
         <input placeholder="35" type="number" {...register("age")} />
       </label>
       <span className="error">{errors.age?.message}</span>
+
       <label htmlFor="email">
         Email:
         <input
@@ -133,6 +130,7 @@ export default function ControlledForm() {
         />
       </label>
       <span className="error">{errors.email?.message}</span>
+
       <label htmlFor="password">
         Password:
         <input
@@ -142,6 +140,7 @@ export default function ControlledForm() {
         />
       </label>
       <span className="error">{errors.password?.message}</span>
+
       <label htmlFor="confirmPassword">
         Confirm Password:
         <input
@@ -151,6 +150,7 @@ export default function ControlledForm() {
         />
       </label>
       <span className="error">{errors.confirmPassword?.message}</span>
+
       <label htmlFor="gender">
         Gender:
         <select {...register("gender")}>
@@ -163,16 +163,19 @@ export default function ControlledForm() {
         </select>
       </label>
       <span className="error">{errors.gender?.message}</span>
+
       <label>
         <input type="checkbox" {...register("acceptTermsConditions")} />
         Accept Terms and Conditions
       </label>
       <span className="error">{errors.acceptTermsConditions?.message}</span>
+
       <label htmlFor="picture">
         Picture:
         <input type="file" {...register("picture")} />
       </label>
       <span className="error">{errors.picture?.message}</span>
+
       <label htmlFor="country">
         Country:
         <input
