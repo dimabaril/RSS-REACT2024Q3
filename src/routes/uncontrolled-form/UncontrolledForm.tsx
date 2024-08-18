@@ -223,7 +223,7 @@ export default function UnControlledForm() {
         </label>
         <span className="error">{errors.gender?.message}</span>
 
-        <label htmlFor="acceptTermsConditions">
+        <label>
           <input
             name="acceptTermsConditions"
             type="checkbox"

@@ -181,7 +181,7 @@ export default function ControlledForm() {
         </label>
         <span className="error">{errors.gender?.message}</span>
 
-        <label htmlFor="acceptTermsConditions">
+        <label>
           <input type="checkbox" {...register("acceptTermsConditions")} />
           Accept Terms and Conditions
         </label>
