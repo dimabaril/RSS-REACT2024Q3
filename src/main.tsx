@@ -8,22 +8,21 @@ import ErrorPage from "./components/ErrorPage";
 import "./index.css";
 import Root from "./routes/Root";
 import ControlledForm from "./routes/controlled-form/ControlledForm";
+import UnControlledForm from "./routes/uncontrolled-form/UncontrolledForm";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
     errorElement: <ErrorPage />,
-    children: [
-      {
-        path: "uncontrolled/",
-        element: <div>Uncontrolled</div>,
-      },
-      {
-        path: "controlled/",
-        element: <ControlledForm />,
-      },
-    ],
+  },
+  {
+    path: "uncontrolled/",
+    element: <UnControlledForm />,
+  },
+  {
+    path: "controlled/",
+    element: <ControlledForm />,
   },
 ]);
 

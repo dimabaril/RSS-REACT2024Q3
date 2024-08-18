@@ -1,6 +1,5 @@
-import { yupResolver } from "@hookform/resolvers/yup";
 import { countries } from "countries-list";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 
@@ -10,8 +9,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { RootState } from "../../app/store";
 import Header from "../../components/Header";
 import PasswordStrengthMeter from "../../components/PasswordStrengthMeter";
-import { FormInput } from "../../types/types";
-import "./ControlledForm.scss";
+import { UncontrolledFormInput } from "../../types/types";
 
 const FILE_SIZE = 1024 * 1024;
 const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png"];
@@ -95,24 +93,65 @@ const schema = yup.object().shape({
     ),
 });
 
-export default function ControlledForm() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch,
-  } = useForm<FormInput>({
-    resolver: yupResolver(schema),
-    mode: "onChange",
-  });
+export default function UnControlledForm() {
+  const [errors, setErrors] = useState<{ [key: string]: { message: string } }>(
+    {},
+  );
+
+  const nameRef = useRef<HTMLInputElement>(null);
+  const ageRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const confirmPasswordRef = useRef<HTMLInputElement>(null);
+  const genderRef = useRef<HTMLSelectElement>(null);
+  const acceptTermsConditionsRef = useRef<HTMLInputElement>(null);
+  const pictureRef = useRef<HTMLInputElement>(null);
+  const countryRef = useRef<HTMLInputElement>(null);
+
   const countries = useAppSelector((state: RootState) => state.countries);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const password = watch("password", "");
+  const validate = async (data: UncontrolledFormInput) => {
+    try {
+      await schema.validate(data, { abortEarly: false });
+      setErrors({});
+      return true;
+    } catch (err) {
+      if (err instanceof yup.ValidationError) {
+        const newErrors: { [key: string]: { message: string } } = {};
+        err.inner.forEach((error) => {
+          if (error.path) {
+            newErrors[error.path] = { message: error.message };
+          }
+        });
+        setErrors(newErrors);
+      }
+      return false;
+    }
+  };
 
-  const onSubmit: SubmitHandler<FormInput> = async (data) => {
-    const base64Picture = await fileToBase64(data.picture[0]);
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = {
+      name: nameRef.current?.value,
+      age: ageRef.current?.value,
+      email: emailRef.current?.value,
+      password: passwordRef.current?.value,
+      confirmPassword: confirmPasswordRef.current?.value,
+      gender: genderRef.current?.value,
+      acceptTermsConditions: acceptTermsConditionsRef.current?.checked,
+      picture: pictureRef.current?.files,
+      country: countryRef.current?.value,
+    };
+    console.log(data);
+
+    if (!(await validate(data))) {
+      return;
+    }
+
+    if (!pictureRef.current?.files) return;
+    const base64Picture = await fileToBase64(pictureRef.current?.files[0]);
     dispatch(addFormData({ ...data, picture: base64Picture }));
     navigate("/");
   };
@@ -121,25 +160,26 @@ export default function ControlledForm() {
     <>
       <Header />
 
-      <form className="form" onSubmit={handleSubmit(onSubmit)}>
+      <form className="form" onSubmit={onSubmit}>
         <label htmlFor="name">
           Name:
-          <input placeholder="name" {...register("name")} />
+          <input name="name" placeholder="name" ref={nameRef} />
         </label>
         <span className="error">{errors.name?.message}</span>
 
         <label htmlFor="age">
           Age:
-          <input placeholder="age" type="number" {...register("age")} />
+          <input name="age" placeholder="age" type="number" ref={ageRef} />
         </label>
         <span className="error">{errors.age?.message}</span>
 
         <label htmlFor="email">
           Email:
           <input
+            name="email"
             placeholder="yourmail@mail.com"
             type="email"
-            {...register("email")}
+            ref={emailRef}
           />
         </label>
         <span className="error">{errors.email?.message}</span>
@@ -147,30 +187,32 @@ export default function ControlledForm() {
         <label htmlFor="password">
           Password:
           <input
+            name="password"
             placeholder="password"
             type="password"
-            {...register("password")}
+            ref={passwordRef}
           />
         </label>
         <label>
           Password strength:
-          <PasswordStrengthMeter password={password} />
+          <PasswordStrengthMeter password={passwordRef.current?.value || ""} />
         </label>
         <span className="error">{errors.password?.message}</span>
 
         <label htmlFor="confirmPassword">
           Confirm Password:
           <input
+            name="confirmPassword"
             placeholder="password"
             type="password"
-            {...register("confirmPassword")}
+            ref={confirmPasswordRef}
           />
         </label>
         <span className="error">{errors.confirmPassword?.message}</span>
 
         <label htmlFor="gender">
           Gender:
-          <select {...register("gender")}>
+          <select name="gender" ref={genderRef}>
             <option value="">select...</option>
             {GENDER.map((gender) => (
               <option key={gender} value={gender}>
@@ -182,23 +224,28 @@ export default function ControlledForm() {
         <span className="error">{errors.gender?.message}</span>
 
         <label htmlFor="acceptTermsConditions">
-          <input type="checkbox" {...register("acceptTermsConditions")} />
+          <input
+            name="acceptTermsConditions"
+            type="checkbox"
+            ref={acceptTermsConditionsRef}
+          />
           Accept Terms and Conditions
         </label>
         <span className="error">{errors.acceptTermsConditions?.message}</span>
 
         <label htmlFor="picture">
           Picture:
-          <input type="file" {...register("picture")} />
+          <input name="picture" type="file" ref={pictureRef} />
         </label>
         <span className="error">{errors.picture?.message}</span>
 
         <label htmlFor="country">
           Country:
           <input
+            name="country"
             list="countries"
             placeholder="country"
-            {...register("country")}
+            ref={countryRef}
           />
           <datalist id="countries">
             {countries.map((country) => (

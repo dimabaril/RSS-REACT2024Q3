@@ -1,19 +1,18 @@
-import { Link, Outlet } from "react-router-dom";
+import { useAppSelector } from "../app/hooks";
+import { RootState } from "../app/store";
+import FormData from "../components/FormData";
+import Header from "../components/Header";
 
 export default function Root() {
+  const formData = useAppSelector((state: RootState) => state.formData);
+
   return (
     <>
-      <nav>
-        <ul>
-          <li>
-            <Link to={`uncontrolled`}>Uncontrolled</Link>
-          </li>
-          <li>
-            <Link to={`controlled`}>Controlled</Link>
-          </li>
-        </ul>
-      </nav>
-      <Outlet />
+      <Header />
+      {formData.length === 0 && <h2>No data to display</h2>}
+      {formData.map((data, index) => (
+        <FormData {...data} key={index} />
+      ))}
     </>
   );
 }
