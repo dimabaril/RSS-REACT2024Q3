@@ -208,7 +208,9 @@ export default function ControlledForm() {
         </label>
         <span className="error">{errors.country?.message}</span>
 
-        <button type="submit">Submit</button>
+        <button type="submit" disabled={Object.keys(errors).length > 0}>
+          Submit
+        </button>
       </form>
     </>
   );
