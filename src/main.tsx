@@ -4,7 +4,6 @@ import { Provider } from "react-redux";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import { store } from "./app/store";
-import ErrorPage from "./components/ErrorPage";
 import "./index.css";
 import Root from "./routes/Root";
 import ControlledForm from "./routes/controlled-form/ControlledForm";
@@ -14,7 +13,6 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
-    errorElement: <ErrorPage />,
   },
   {
     path: "uncontrolled/",
