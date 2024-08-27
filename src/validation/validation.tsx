@@ -11,7 +11,7 @@ const firstUppercaseLetterSchema = yup
     "the first letter must be uppercase",
     (value) => {
       if (!value) return false;
-      return /^[A-Z]/.test(value);
+      return /^\p{Lu}/u.test(value);
     },
   );
 
