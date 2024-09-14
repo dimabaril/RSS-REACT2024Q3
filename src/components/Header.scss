@@ -1,0 +1,15 @@
+.nav-list {
+  display: flex;
+  gap: 1rem;
+}
+.nav-list__item {
+  display: block;
+  padding: 0.2rem 1.5rem;
+  border: 1px solid black;
+  color: black;
+
+  &.active {
+    background-color: gray;
+    color: white;
+  }
+}

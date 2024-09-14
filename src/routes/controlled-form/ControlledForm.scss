@@ -1,0 +1,15 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  label {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .error {
+    color: red;
+    height: 2.5rem;
+  }
+}

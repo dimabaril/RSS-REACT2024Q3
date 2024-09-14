@@ -1,0 +1,29 @@
+.form-data {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 1rem;
+  border: 3px solid lightgray;
+
+  &:last-child {
+    border: 3px solid blue;
+  }
+}
+
+.form-data__name,
+.form-data__age,
+.form-data__email,
+.form-data__password,
+.form-data__gender,
+.form-data__country {
+}
+
+.form-data__picture {
+  max-width: 500px;
+  text-align: left;
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+}
